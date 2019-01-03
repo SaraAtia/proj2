@@ -7,6 +7,6 @@
 
 template <class P, class S>
 class Solver{
-    virtual P* solve(S* p)=0;
+    virtual S* solve(P* p)=0;
 };
 #endif //PROJ2_SOLVER_H

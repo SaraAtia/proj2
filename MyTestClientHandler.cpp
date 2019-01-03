@@ -3,12 +3,13 @@
 //
 
 #include "MyTestClientHandler.h"
-
-MyTestClientHandler::MyTestClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm){
+template <class P, class S>
+MyTestClientHandler<P,S>::MyTestClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm){
     this->solver = solver;
     this->cm = cm;
 }
-void MyTestClientHandler::handleClient(istream input, ostream output) {
+template <class P, class S>
+void MyTestClientHandler<P,S>::handleClient(istream input, ostream output) {
 
 
 }
