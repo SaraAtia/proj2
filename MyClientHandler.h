@@ -10,11 +10,11 @@
 #include "Solver.h"
 #include "CacheManager.h"
 template <class P, class S>
-class MyTestClientHandler : public ClientHandler{
+class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
     CacheManager<P, S>* cm;
 public:
-    MyTestClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm);
+    MyClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm);
     void handleClient(istream input, ostream output) override;
 
 };

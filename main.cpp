@@ -2,7 +2,7 @@
 #include "MySerialServer.h"
 #include "Server.h"
 #include "StringReverser.h"
-#include "MyTestClientHandler.h"
+#include "MyClientHandler.h"
 #include "CacheManager.h"
 #include "FileCacheManager.h"
 
@@ -12,7 +12,7 @@ namespace boot{
             Server* s = new MySerialServer();
             Solver<string, string>* solver = new StringReverser();
             CacheManager<string, string> *manager = new FileCacheManager<string, string>();
-            ClientHandler* clientHandler = new MyTestClientHandler<string,string>(solver,manager);
+            ClientHandler* clientHandler = new MyClientHandler<string,string>(solver,manager);
             s->open(stoi(argc[0]), clientHandler);
             return 0;
         }
