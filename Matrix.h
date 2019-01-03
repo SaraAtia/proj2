@@ -11,14 +11,18 @@
 template <class T>
 class Matrix: public Searchable<T> {
     vector<vector<State<T>*>> matrix;
+    vector<vector<T>> values;
+    State<T>* initialState;
+    State<T>* goalState;
 public:
     Matrix(vector<vector<T>> values, pair<int,int> in, pair<int,int> out);
     State<T> *getInitialState() override;
 
     State<T> *getGoalState() override;
-
+    //Todo
     list<State<T> *> getAllPossibleStates(State<T> s);
 
+    vector<vector<T>> getValues();
 };
 
 
