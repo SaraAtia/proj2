@@ -6,7 +6,13 @@
 
 template <class T>
 Matrix<T>::Matrix(vector<vector<T>> values, pair<int,int> in, pair<int,int> out){
-
+    vector<vector<State<T>*>> tempMatrix;
+    for(vector<T> row: values){
+        vector<
+        for(T node: row){
+            tempMatrix.push_back(new State<int>(node));
+        }
+    }
 }
 
 template <class T>

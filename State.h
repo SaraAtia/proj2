@@ -6,12 +6,19 @@
 #define PROJ2_STATE_H
 template <class T>
 class State{
-    T state;
+    T position;
     double cost;
     State<T> cameFrom;
 public:
     State(T state);
-    bool equals(State<T> other) override;
+    bool equals(State<T>* other) override;
     void setCost(double cost);
+    void setCameFrom(State<T>* state);
+
+    T getState();
+
+    double getCost() const;
+
+    const State<T> getCameFrom();
 };
 #endif //PROJ2_STATE_H
