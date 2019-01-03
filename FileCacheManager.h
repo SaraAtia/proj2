@@ -18,6 +18,14 @@ public:
     void saveProblem(P *p, S *s) override;
 
 };
-
-
+//todo: choose data base, and format for saving data in the file
+/*
+ * format - 3 col' separated by '?':
+ * first index for problem type flag as letter
+ * second index for problem info - will be read until '?'
+ * third - solution
+ */
+/*
+ * in the distructor we'll update the file
+ */
 #endif //PROJ2_FILECACHEMANAGER_H
