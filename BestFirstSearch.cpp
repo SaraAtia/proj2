@@ -25,7 +25,7 @@ vector<State<S> *> BestFirstSearch<S>::search(Searchable<S> *searchable) {
             }
             return path;
         } else
-            for (State<S> *s:searchable->getAllPossiableStates(n)) {
+            for (State<S> *s:searchable->getAllPossibleStates(n)) {
                 if (closed.count(s) != 0 && !hasItem(open, s)) {
                     s->setCameFrom(n);
                     open.push(s);

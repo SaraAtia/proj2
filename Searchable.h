@@ -16,6 +16,6 @@ public:
 
     virtual State<T>* getGoalState()=0;
 
-    virtual list<State<T>*> getAllPossiableStates(State<T> s)=0;
+    virtual list<State<T>*> getAllPossibleStates(State<T> s)=0;
 };
 #endif //PROJ2_SEARCHABLE_H

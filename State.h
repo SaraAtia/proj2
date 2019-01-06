@@ -8,10 +8,10 @@ template <class T>
 class State{
     T position;
     double cost;
-    State<T> cameFrom;
+    State<T>* cameFrom;
 public:
     State(T state);
-    bool equals(State<T>* other) override;
+    bool equals(State<T>* other); // todo: override equals in Object
     void setCost(double cost);
     void setCameFrom(State<T>* state);
 

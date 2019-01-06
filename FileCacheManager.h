@@ -6,17 +6,26 @@
 #define PROJ2_FILECACHEMANAGER_H
 
 
+//a -> MATRIX , vector[MATRIX] == map<Matrix, Solu>
 #include "CacheManager.h"
+#include <vector>
+#include <map>
+#include <string>
+enum Problems{MATRIX, PATH, REVERS};
+using namespace std;
 template<class P, class S>
 class FileCacheManager : public CacheManager<P, S>{
-
+    vector<map<string,S>>  problemsType;
 public:
     bool isSolved(P *p) override;
 
     S *getSolution(P *p) override;
 
     void saveProblem(P *p, S *s) override;
-
+/*
+ * todo: every solution will have "convert to string" method
+ *
+ */
 };
 //todo: choose data base, and format for saving data in the file
 /*

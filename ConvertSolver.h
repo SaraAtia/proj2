@@ -5,16 +5,15 @@
 #ifndef PROJ2_CONVERTSOLVER_H
 #define PROJ2_CONVERTSOLVER_H
 
-
-#include "Solver.h"
 #include <vector>
 #include <string>
+#include "Solver.h"
 #include "State.h"
+
 using namespace std;
-template <class T>
-class ConvertSolver : public Solver<vector<State<T>*>, vector<string>>{
+class ConvertSolver : public Solver<vector<State<pair<int,int>>*>, vector<string>>{
 public:
-    vector<string> *solve( vector<State<T>*> path) override;
+    virtual vector<string> solve(vector<State<pair<int,int>>*> path);
 };
 
 

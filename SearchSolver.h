@@ -10,10 +10,10 @@
 
 template <class P, class S>
 class SearchSolver : Solver<P, S>{
-    Searcher<S>* searcher; // an algorithm to search
+    Searcher<S> searcher; // an algorithm to search
 public:
-    SearchSolver(Searcher<S>* searcher);
-    S *solve(Searchable<S> *p) override;
+    SearchSolver(Searcher<S> searcher);
+    virtual S solve(Searchable<S> p);
 };
 
 

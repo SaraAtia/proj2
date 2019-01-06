@@ -11,7 +11,7 @@ State<T>::State(T state){
 }
 template <class T>
 bool State<T>::equals(State<T>* other) {
-    return (this->state == other->state);
+    return (this->position == other->position);
 }
 template <class T>
 void State<T>::setCost(double cost){

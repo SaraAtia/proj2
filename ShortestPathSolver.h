@@ -15,9 +15,9 @@
 template <class T>
 class ShortestPathSolver: public Solver<Matrix<T>, vector<string>> {
     SearchSolver<Matrix<T>,vector<State<T>*>> searchSolver;
-    ConvertSolver<T>* convertSolver;
+    ConvertSolver* convertSolver;
 public:
-    vector<string> *solve(Matrix<T> *matrix) override;
+    virtual vector<string> *solve(Matrix<T> *matrix);
 };
 
 
