@@ -16,6 +16,11 @@ public:
         this->cameFrom = nullptr;
     }
 
+    State(T position, double cost, State<T>* cameFrom)  {
+        this->position = position;
+        this->cost = cost;
+        this->cameFrom = cameFrom;
+    }
     bool equals(State<T>* other) {
         return (this->position == other->position);
     }

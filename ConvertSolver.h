@@ -11,9 +11,9 @@
 #include "State.h"
 
 using namespace std;
-class ConvertSolver : public Solver<vector<State<pair<int,int>>*>, vector<string>>{
+class ConvertSolver : public Solver<vector<State<pair<int,int>>>, vector<string>>{
 public:
-    vector<string> solve(vector<State<pair<int,int>>*> path) override;
+    vector<string> solve(vector<State<pair<int,int>>> path) override;
 };
 
 

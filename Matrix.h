@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by sara on 03/01/19.
 //
@@ -8,44 +10,41 @@
 
 #include <vector>
 #include "Searchable.h"
-class Matrix: public Searchable<pair<int,int>> {
-    vector<vector<State<pair<int,int>>*>> matrix;
+
+class Matrix: public Searchable<pair<int, int> > {
+    using Point = pair<int, int>;
+
     vector<vector<double>> values;
-    State<pair<int,int>>* initialState;
-    State<pair<int,int>>* goalState;
+    State<Point> initialState;
+    Point goalNode;
 public:
-    Matrix(vector<vector<double>> values, pair<int,int> in, pair<int,int> out){
-        this->values=values;
-        vector<vector<State<pair<int,int>>*>> tempMatrix;
-        for(int i=0;i<values.size();i++){
-            vector<State<pair<int,int>>*> rowStates;
-            //vector<T> row = values[i];
-            for(int j=0;j<values[i].size();j++){
-                rowStates.push_back(new State<pair<int,int>>(pair<int,int>(i,j)));
-            }
-            tempMatrix.push_back(rowStates);
-        }
-        this->matrix=tempMatrix;
-        this->initialState = this->matrix[in.first][in.second];
-        this->goalState = this->matrix[out.first][out.second];
+    Matrix(vector<vector<double>> values, Point in, Point out):initialState(State<Point>(in, get_price(in), nullptr)){
+        this->values = std::move(values);
+        this->goalNode = out;
+//        this->initialState = State<Point>(in, get_price(in), nullptr);
     }
 
 
-    State<pair<int,int>> *getInitialState(){
+    State<Point > getInitialState() override {
         return this->initialState;
     }
 
 
-    State<pair<int,int>> *getGoalState() override{
-        return this->goalState;
+    Point getGoalNode() override{
+        return this->goalNode;
     }
 //TODO
 
-    list<State<pair<int,int>>*> getAllPossibleStates(State<pair<int,int>> s) override{
+    list<State<pair<int,int>>> getAllPossibleStates(State<pair<int,int>> s) override{
+
     }
 
     vector<vector<double >> getValues(){
         return this->values;
+    }
+private:
+    double get_price(pair<int, int> p)  {
+        return this->values[p.first][p.second];
     }
 };
 

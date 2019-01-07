@@ -2,12 +2,12 @@
 // Created by sara on 07/01/19.
 //
 
+
+//#include "Searcher.h"
 #include <iostream>
 #include "Matrix.h"
-//#include "Searcher.h"
-#include "BestFirstSearch.h"
 #include "SearchSolver.h"
-#include "ConvertSolver.h"
+#include "BestFirstSearch.h"
 /*namespace boot{
     class Main{
         int main(int argv, string argc[]) {
@@ -20,7 +20,7 @@
         }
     };
 }*/
-using namespace std;
+//using namespace std;
 int main(){
     /*Solver<vector<State<pair<int,int>>*>,vector<string>>* cs = new ConvertSolver();
     State<pair<int,int>>* a = new State<pair<int,int>>(pair<int,int>(0,0));
@@ -38,9 +38,12 @@ int main(){
     for(string s:sol){
         cout<< s<<", ";
     }*/
+    typedef pair<int, int> Point;
     vector<vector<double>> mat = {{1,2,3},{4,5,6},{7,8,9}};
-    Searchable<pair<int,int>>* searchable = new Matrix(mat,pair<int,int>(0,0), pair<int,int>(2,2));
+    Searchable<Point>* searchable = new Matrix(mat,make_pair(0,0), make_pair(2,2));
    // Searcher<pair<int,int>>* searcher=new BestFirstSearch<pair<int,int>>();
-    Solver<Searchable<pair<int,int>*>,vector<State<pair<int,int>>*>>* solver=new SearchSolver<pair<int,int>,pair<int,int>>(new BestFirstSearch<pair<int,int>>());
+    Solver<Searchable<Point>*,vector<State<Point>>>* solver=
+            new SearchSolver<Point,vector<State<Point>>> (new BestFirstSearch<Point>());
     solver->solve(searchable);
+    return 0;
 }

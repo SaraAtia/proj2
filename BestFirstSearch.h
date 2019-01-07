@@ -12,39 +12,43 @@
 template <class S>
 class BestFirstSearch: public Searcher<S> {
 public:
-    bool hasItem(priority_queue<State<S> *> open, State<S> *node) {
-        queue<State<S> *> temp;
+    bool hasItem(priority_queue<State<S> > open, State<S> node) {
+        queue<State<S> > temp;
         bool flag = false;
 //check all the nodes till found or empty queue
         while (!open.empty()) {
-            if (open.top()->equals(node)) {
+            if (open.top().equals(node)) {
                 flag = true;
-                temp.push(open.pop());
+                temp.push(open.top());
+                open.pop();
                 break;
             }
-            temp.push(open.pop());
+            temp.push(open.top());
+            open.pop();
         }
 //return the nodes that in the temp
         while (!temp.empty()) {
-            open.push(temp.pop());
+            open.push(temp.top());
+            temp.pop();
         }
         return flag;
     }
-    vector<State<S> *> search(Searchable<State<S>>* searchable) override {
-        priority_queue<State<S> *> open;
-        unordered_set<State<S> *> closed;
-        vector<State<S> *> path;
+    vector<State<S> > search(Searchable<S>* searchable) override {
+        priority_queue<State<S> > open;
+        unordered_set<State<S> > closed;
+        vector<State<S> > path;
         double currentValue;
         open.push(searchable->getInitialState());
         while (!open.empty()) {
             //todo < operator to pop
-            State<S> *n = open.pop();
+            State<S> n = open.top();
             closed.push(n);
-            if (n->equals(searchable->getGoalState())) {
+            open.pop();
+            if (n.equals(searchable->getGoalNode())) {
                 //find the path
-                while (!n->equals(searchable->getInitialState())) {
-                    path.insert(path.begin(), n->getCameFrom());
-                    n = n->getCameFrom();
+                while (!n.equals(searchable->getInitialNode())) {
+                    path.insert(path.begin(), n.getCameFrom());
+                    n = n.getCameFrom();
                 }
                 return path;
             } else
@@ -53,7 +57,7 @@ public:
                         s->setCameFrom(n);
                         open.push(s);
                     }
-                        //todo this is better
+ /*                       //todo this is better
                     else if (1) {
                         if (!hasItem(s, open)) {
                             open.push(s);
@@ -62,7 +66,7 @@ public:
 
                         }
                     }
-                }
+                }*/
         }
         return path;
     }
