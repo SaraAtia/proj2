@@ -9,14 +9,14 @@
 #include "Searcher.h"
 
 template <class P, class S>
-class SearchSolver : Solver<P, S>{
-    Searcher<S> searcher; // an algorithm to search
+class SearchSolver : public Solver<Searchable<State<P>>*, S>{
+    Searcher<P>* searcher; // an algorithm to search
 public:
-    SearchSolver(Searcher<S> searcher){
+    explicit SearchSolver(Searcher<P>* searcher){
         this->searcher = searcher;
     }
 
-    S solve(Searchable<S> p) override{
+    S solve(Searchable<State<P>>* p) override{
         return this->searcher->search(p);
     }
 };

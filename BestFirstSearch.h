@@ -2,8 +2,8 @@
 // Created by paz on 03/01/19.
 //
 
-#ifndef MILESTONE2_BESTFIRSTSEARCH_H
-#define MILESTONE2_BESTFIRSTSEARCH_H
+#ifndef PROJ2_BESTFIRSTSEARCH_H
+#define PROJ2_BESTFIRSTSEARCH_H
 
 
 #include "Searcher.h"
@@ -12,7 +12,25 @@
 template <class S>
 class BestFirstSearch: public Searcher<S> {
 public:
-    vector<State<S> *> search(Searchable<S> *searchable) override {
+    bool hasItem(priority_queue<State<S> *> open, State<S> *node) {
+        queue<State<S> *> temp;
+        bool flag = false;
+//check all the nodes till found or empty queue
+        while (!open.empty()) {
+            if (open.top()->equals(node)) {
+                flag = true;
+                temp.push(open.pop());
+                break;
+            }
+            temp.push(open.pop());
+        }
+//return the nodes that in the temp
+        while (!temp.empty()) {
+            open.push(temp.pop());
+        }
+        return flag;
+    }
+    vector<State<S> *> search(Searchable<State<S>>* searchable) override {
         priority_queue<State<S> *> open;
         unordered_set<State<S> *> closed;
         vector<State<S> *> path;
@@ -49,26 +67,8 @@ public:
         return path;
     }
 
-    bool hasItem(priority_queue<State<S> *> open, State<S> *node) {
-        queue<State<S> *> temp;
-        bool flag = false;
-//check all the nodes till found or empty queue
-        while (!open.empty()) {
-            if (open.top()->equals(node)) {
-                flag = true;
-                temp.push(open.pop());
-                break;
-            }
-            temp.push(open.pop());
-        }
-//return the nodes that in the temp
-        while (!temp.empty()) {
-            open.push(temp.pop());
-        }
-        return flag;
-    }
 
 };
 
 
-#endif //MILESTONE2_BESTFIRSTSEARCH_H
+#endif //PROJ2_BESTFIRSTSEARCH_H
