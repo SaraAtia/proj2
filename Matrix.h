@@ -15,14 +15,39 @@ class Matrix: public Searchable<T> {
     State<T>* initialState;
     State<T>* goalState;
 public:
-    Matrix(vector<vector<T>> values, pair<int,int> in, pair<int,int> out);
-    State<T> *getInitialState() override;
+    Matrix(vector<vector<T>> values, pair<int,int> in, pair<int,int> out){
+        this->values=values;
+        vector<vector<State<T>*>> tempMatrix;
+        for(int i=0;i<values.size();i++){
+            vector<State<T>*> rowStates;
+            vector<T> row = values[i];
+            for(int j=0;j<row.size();j++){
+                rowStates.push_back(new State<pair<int,int>>(pair<int,int>(i,j)));
+            }
+            tempMatrix.push_back(rowStates);
+        }
+        this->matrix=tempMatrix;
+        this->initialState = this->matrix[in.first][in.second];
+        this->goalState = this->matrix[out.first][out.second];
+    }
 
-    State<T> *getGoalState() override;
-    //Todo
-    list<State<T> *> getAllPossibleStates(State<T> s);
 
-    vector<vector<T>> getValues();
+    State<T> *getInitialState() override {
+        return this->initialState;
+    }
+
+
+    State<T> *getGoalState() override{
+        return this->goalState;
+    }
+//TODO
+
+    list<State<T>*> getAllPossibleStates(State<T> s) override{
+    }
+
+    vector<vector<T>> getValues() override{
+        return this->values;
+    }
 };
 
 

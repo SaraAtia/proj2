@@ -13,7 +13,7 @@
 using namespace std;
 class ConvertSolver : public Solver<vector<State<pair<int,int>>*>, vector<string>>{
 public:
-    virtual vector<string> solve(vector<State<pair<int,int>>*> path);
+    vector<string> solve(vector<State<pair<int,int>>*> path) override;
 };
 
 

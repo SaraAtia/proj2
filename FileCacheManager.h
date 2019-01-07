@@ -17,11 +17,20 @@ template<class P, class S>
 class FileCacheManager : public CacheManager<P, S>{
     vector<map<string,S>>  problemsType;
 public:
-    bool isSolved(P *p) override;
+    bool isSolved(P *p) override{
+        //
+    }
 
-    S *getSolution(P *p) override;
 
-    void saveProblem(P *p, S *s) override;
+    S* getSolution(P *p) override{
+        return nullptr;
+    }
+
+
+    void saveProblem(P *p, S *s) override{
+
+        //this->problemsType.at(p->to_string(),s)
+    }
 /*
  * todo: every solution will have "convert to string" method
  *

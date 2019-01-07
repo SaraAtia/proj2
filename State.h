@@ -10,15 +10,37 @@ class State{
     double cost;
     State<T>* cameFrom;
 public:
-    State(T state);
-    bool equals(State<T>* other); // todo: override equals in Object
-    void setCost(double cost);
-    void setCameFrom(State<T>* state);
+    State(T state){
+        this->position = state;
+        this->cost = 0;
+        this->cameFrom = nullptr;
+    }
 
-    T getState();
+    bool equals(State<T>* other) {
+        return (this->position == other->position);
+    }
 
-    double getCost() const;
+    void setCost(double cost){
+        this->cost = cost;
+    }
 
-    const State<T> getCameFrom();
+    void setCameFrom(State<T>* state){
+        this->cameFrom = state;
+    }
+
+
+    T getState() {
+        return position;
+    }
+
+
+    double getCost() const {
+        return cost;
+    }
+
+
+    const State<T> getCameFrom() {
+        return cameFrom;
+    }
 };
 #endif //PROJ2_STATE_H

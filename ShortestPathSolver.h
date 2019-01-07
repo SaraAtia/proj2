@@ -17,7 +17,10 @@ class ShortestPathSolver: public Solver<Matrix<T>, vector<string>> {
     SearchSolver<Matrix<T>,vector<State<T>*>> searchSolver;
     ConvertSolver* convertSolver;
 public:
-    virtual vector<string> *solve(Matrix<T> *matrix);
+    vector<string> *solve(Matrix<T> *matrix) override {
+        vector<State<T>*> path=searchSolver->solve(matrix);
+        return convertSolver->solve(path);
+    }
 };
 
 

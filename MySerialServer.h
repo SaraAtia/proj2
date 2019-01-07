@@ -9,9 +9,20 @@
 
 using namespace server_side;
 class MySerialServer : public Server{
-    void open(int port, ClientHandler* clientHandler) override;
+    void open(int port, ClientHandler* clientHandler) override {
 
-    void stop() override;
+        /*
+         * open a thread
+         * open a socket
+         * once someone is connected it the limited time we have assign to it - send to client handler
+         * else - stop
+         * after finished one client go to next client
+         */
+    }
+
+    void stop() override {
+
+    }
 
 };
 

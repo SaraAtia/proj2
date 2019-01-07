@@ -14,9 +14,18 @@ class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
     CacheManager<P, S>* cm;
 public:
-    MyClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm);
-    void handleClient(istream input, ostream output) override;
+    MyClientHandler(Solver<P, S>* solver, CacheManager<P, S>* cm){
+        this->solver = solver;
+        this->cm = cm;
+    }
 
+
+    void handleClient(istream input, ostream output) override{
+        // get info and insert to vector<vector<string>> (after sending to lexer)
+        // check if info is solved in "Cache Manager" - if not send to Solver
+        // if you solved - add new solution to map (FileCacheManger)
+        // send solution
+    }
 };
 
 
