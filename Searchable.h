@@ -8,7 +8,7 @@
 #include "State.h"
 #include <list>
 using namespace std;
-template <class T>
+template <class T> // T marks the position of the state
 class Searchable{
 
 public:

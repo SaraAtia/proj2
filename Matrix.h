@@ -8,20 +8,19 @@
 
 #include <vector>
 #include "Searchable.h"
-template <class T>
-class Matrix: public Searchable<T> {
-    vector<vector<State<T>*>> matrix;
-    vector<vector<T>> values;
-    State<T>* initialState;
-    State<T>* goalState;
+class Matrix: public Searchable<pair<int,int>> {
+    vector<vector<State<pair<int,int>>*>> matrix;
+    vector<vector<double>> values;
+    State<pair<int,int>>* initialState;
+    State<pair<int,int>>* goalState;
 public:
-    Matrix(vector<vector<T>> values, pair<int,int> in, pair<int,int> out){
+    Matrix(vector<vector<double>> values, pair<int,int> in, pair<int,int> out){
         this->values=values;
-        vector<vector<State<T>*>> tempMatrix;
+        vector<vector<State<pair<int,int>>*>> tempMatrix;
         for(int i=0;i<values.size();i++){
-            vector<State<T>*> rowStates;
-            vector<T> row = values[i];
-            for(int j=0;j<row.size();j++){
+            vector<State<pair<int,int>>*> rowStates;
+            //vector<T> row = values[i];
+            for(int j=0;j<values[i].size();j++){
                 rowStates.push_back(new State<pair<int,int>>(pair<int,int>(i,j)));
             }
             tempMatrix.push_back(rowStates);
@@ -32,20 +31,20 @@ public:
     }
 
 
-    State<T> *getInitialState() override {
+    State<pair<int,int>> *getInitialState(){
         return this->initialState;
     }
 
 
-    State<T> *getGoalState() override{
+    State<pair<int,int>> *getGoalState() override{
         return this->goalState;
     }
 //TODO
 
-    list<State<T>*> getAllPossibleStates(State<T> s) override{
+    list<State<pair<int,int>>*> getAllPossibleStates(State<pair<int,int>> s) override{
     }
 
-    vector<vector<T>> getValues() override{
+    vector<vector<double >> getValues(){
         return this->values;
     }
 };

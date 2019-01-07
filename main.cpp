@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ConvertSolver.h"
+#include "Matrix.h"
 
 /*namespace boot{
     class Main{
@@ -15,7 +15,7 @@
 }*/
 using namespace std;
 int main(){
-    Solver<vector<State<pair<int,int>>*>,vector<string>>* cs = new ConvertSolver();
+    /*Solver<vector<State<pair<int,int>>*>,vector<string>>* cs = new ConvertSolver();
     State<pair<int,int>>* a = new State<pair<int,int>>(pair<int,int>(0,0));
     State<pair<int,int>>* b = new State<pair<int,int>>(pair<int,int>(1,0));
     State<pair<int,int>>* c = new State<pair<int,int>>(pair<int,int>(1,1));
@@ -30,6 +30,7 @@ int main(){
     vector<string> sol = cs->solve(vec);
     for(string s:sol){
         cout<< s<<", ";
-    }
-
+    }*/
+    vector<vector<double>> mat = {{1,2,3},{4,5,6},{7,8,9}};
+    Searchable<pair<int,int>>* searchable = new Matrix(mat,pair<int,int>(0,0), pair<int,int>(2,2));
 }
