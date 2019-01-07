@@ -10,7 +10,7 @@
 using namespace std;
 template <class Node> // Node marks the position of the state
 class Searchable{
-
+// TODO searchable
 public:
     virtual State<Node> getInitialState()=0;
 
