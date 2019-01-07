@@ -4,13 +4,13 @@
 
 #include "ConvertSolver.h"
 //todo: to convert from index path to instruction - if went down on row index put"Down"..
-vector<string> ConvertSolver::solve(vector<State<pair<int,int>>> path){
+vector<string> ConvertSolver::solve(vector<pair<int,int>> path){
     vector<string> instructions;
     for(int i = 1 ; i < path.size(); i++){
-        int xSrc = path[i-1].getState().first;
-        int ySrc = path[i-1].getState().second;
-        int xDes = path[i].getState().first;
-        int yDes = path[i].getState().second;
+        int xSrc = path[i-1].first;
+        int ySrc = path[i-1].second;
+        int xDes = path[i].first;
+        int yDes = path[i].second;
         // no change in x
         if(xDes==xSrc){
             if(yDes == ySrc+1){

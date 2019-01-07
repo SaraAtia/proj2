@@ -21,7 +21,7 @@
     };
 }*/
 //using namespace std;
-int main(){
+int main() {
     /*Solver<vector<State<pair<int,int>>*>,vector<string>>* cs = new ConvertSolver();
     State<pair<int,int>>* a = new State<pair<int,int>>(pair<int,int>(0,0));
     State<pair<int,int>>* b = new State<pair<int,int>>(pair<int,int>(1,0));
@@ -39,11 +39,13 @@ int main(){
         cout<< s<<", ";
     }*/
     typedef pair<int, int> Point;
-    vector<vector<double>> mat = {{1,2,3},{4,5,6},{7,8,9}};
-    Searchable<Point>* searchable = new Matrix(mat,make_pair(0,0), make_pair(2,2));
-   // Searcher<pair<int,int>>* searcher=new BestFirstSearch<pair<int,int>>();
-    Solver<Searchable<Point>*,vector<State<Point>>>* solver=
-            new SearchSolver<Point,vector<State<Point>>> (new BestFirstSearch<Point>());
+    vector<vector<double>> mat = {{1, 2, 3},
+                                  {4, 5, 6},
+                                  {7, 8, 9}};
+    Searchable<Point> *searchable = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
+    // Searcher<pair<int,int>>* searcher=new BestFirstSearch<pair<int,int>>();
+    Solver<Searchable<Point> *, vector<Point>> *solver =
+            new SearchSolver<Point, vector<Point>>(new BestFirstSearch<Point>());
     solver->solve(searchable);
     return 0;
 }

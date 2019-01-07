@@ -14,11 +14,11 @@
 
 template <class T>
 class ShortestPathSolver: public Solver<Matrix, vector<string>> {
-    SearchSolver<Matrix,vector<State<T>*>> searchSolver;
+    SearchSolver<Matrix,vector<T>>* searchSolver;
     ConvertSolver* convertSolver;
 public:
     vector<string> solve(Matrix matrix) override {
-        vector<State<T>*> path=searchSolver->solve(matrix);
+        vector<T> path=searchSolver->solve(matrix);
         return convertSolver->solve(path);
     }
 };

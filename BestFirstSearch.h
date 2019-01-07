@@ -12,8 +12,8 @@
 template <class S>
 class BestFirstSearch: public Searcher<S> {
 public:
-    bool hasItem(priority_queue<State<S> > open, State<S> node) {
-        queue<State<S> > temp;
+    bool hasItem(priority_queue <S> open, S node) {
+        queue <S> temp;
         bool flag = false;
 //check all the nodes till found or empty queue
         while (!open.empty()) {
@@ -33,10 +33,11 @@ public:
         }
         return flag;
     }
-    vector<State<S> > search(Searchable<S>* searchable) override {
-        priority_queue<State<S> > open;
-        unordered_set<State<S> > closed;
-        vector<State<S> > path;
+
+    vector<S> search(Searchable<S> *searchable) override {
+        priority_queue <State<S>> open;
+        unordered_set <State<S>> closed;
+        vector<S> path;
         double currentValue;
         open.push(searchable->getInitialState());
         while (!open.empty()) {
@@ -57,21 +58,20 @@ public:
                         s->setCameFrom(n);
                         open.push(s);
                     }
- /*                       //todo this is better
-                    else if (1) {
-                        if (!hasItem(s, open)) {
-                            open.push(s);
-                        } else {
-                            //todo adjust priority
+                    /*                       //todo this is better
+                                       else if (1) {
+                                           if (!hasItem(s, open)) {
+                                               open.push(s);
+                                           } else {
+                                               //todo adjust priority
 
-                        }
-                    }
-                }*/
+                                           }
+                                       }
+                                   }*/
+                }
+            return path;
         }
-        return path;
     }
-
-
 };
 
 
