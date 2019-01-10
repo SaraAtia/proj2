@@ -7,6 +7,10 @@
 #include "Server.h"
 
 class MyParallelServer : public server_side::Server{
+public:
+    void open(int port, ClientHandler *clientHandler) override;
+
+    void stop(std::stack<pthread_t> threads) override;
 
 };
 

@@ -6,10 +6,11 @@
 #define PROJ2_CLIENTHANDLER_H
 
 #include <istream>
-
+#include <sys/socket.h>
 using namespace std;
 class ClientHandler {
-    virtual void handleClient(istream input, ostream output)=0;
+public:
+    virtual void handleClient(int socketID)=0;
 };
 
 
