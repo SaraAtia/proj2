@@ -8,71 +8,101 @@
 
 #include "Searcher.h"
 #include <queue>
+#include "map"
 #include <unordered_set>
+#include "iostream"
+template <class Node>
+class comp{
+public:
+    int operator() (const State<Node>* p1, const State<Node>* p2)
+    {
+        return p1->getCost() > p2->getCost();
+    }
+};
 template <class Node>
 class BestFirstSearch: public Searcher<Node> {
+    int NumberOfNodesEvaluated=0;
 public:
-    bool hasItem(priority_queue <State<Node>> open, Node node) {
-        queue <State<Node>> temp;
-        bool flag = false;
-//check all the nodes till found or empty queue
-        while (!open.empty()) {
-            if (open.top().equals(node)) {
-                flag = true;
-                temp.push(open.top());
+    int getNumberOfNodesEvaluated(){
+        return this->NumberOfNodesEvaluated;
+    }
+    void init(Searchable<Node> *searchable){
+        for(vector<State<Node>*> s:searchable->getSates()){
+            for(State<Node>* state:s){
+                state->setVisited(false);
+                state->setCameFrom(nullptr);
+                state->setCost(searchable->getInitCost(state->getState()));
+            }
+        }
+    }
+    vector<Node> search(Searchable<Node> *searchable) override {
+        init(searchable);
+        std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open;
+        //std::unordered_set <State<Node>*> closed;
+        open.push(searchable->getInitialState());
+        while(!open.empty()){
+            State<Node>* n=open.top();
+            this->NumberOfNodesEvaluated++;
+            open.pop();
+            n->setVisited(true);
+            if(n==searchable->getGoalState()){ break;}
+            for(State<Node>* s : searchable->getAllPossibleStates(*n)){
+                if(!s->isVisited()&&!hasItem(open,s)){
+                    s->setCameFrom(n);
+                    s->setCost(s->getCost() + n->getCost());
+                    open.push(s);
+                }
+                else if(!s->isVisited() ){
+                    //for the first node
+                    //if(n==searchable->getInitialState()) {
+                        if ((s->getCost() + n->getCost()) < (s->getCost() + s->getCameFrom()->getCost())) {
+                            if (!hasItem(open, s))
+                                open.push(s);
+                            else
+                                //arrange the queue
+                                hasItem(open, s);
+                            s->setCost(s->getCost() + n->getCost());
+                        }
+                }
+            }
+        }
+        //return path
+        State<Node> state =*(searchable->getGoalState());
+        vector<Node> path;
+        while(state.getCameFrom() != nullptr){
+            path.push_back(state.getState());
+            state=*(state.getCameFrom());
+        }
+        path.push_back(searchable->getInitialNode());
+        cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
+        return path;
+    }
+    bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
+        std::queue<State<Node>*> temp;
+        bool flag=false;
+        while(!open.empty()){
+            State<Node>* state=open.top();
+            if(state==s){
+                flag=true;
                 open.pop();
+                temp.push(state);
                 break;
             }
-            temp.push(open.top());
-            open.pop();
+            else{
+                open.pop();
+                temp.push(state);
+            }
         }
-//return the nodes that in the temp
-        while (!temp.empty()) {
-            open.push(temp.front());
+        while(!temp.empty()){
+            State<Node>* state=temp.front();
             temp.pop();
+            open.push(state);
         }
         return flag;
     }
 
-    vector<Node> search(Searchable<Node> *searchable) override {
-        priority_queue <State<Node>> open;
-        unordered_set <State<Node>> closed;
-        vector<Node> path;
-        double currentValue;
-        open.push(searchable->getInitialState());
-        while (!open.empty()) {
-            //todo < operator to pop
-            State<Node> n = open.top();
-            closed.insert(n);
-            open.pop();
-            if (n.equals(searchable->getGoalNode())) {
-                //find the path
-                while (!n.equals(searchable->getInitialNode())) {
-                    path.insert(path.begin(), n.getCameFrom().getState());
-                    n = n.getCameFrom();
-                }
-                return path;
-            } else
-                for (State<Node> s:searchable->getAllPossibleStates(n)) {
-                    if (closed.count(s) != 0 && !hasItem(open, s.getState())) {
-                        s.setCameFrom(&n);
-                        open.push(s);
-                    }
-                    /*                       //todo this is better
-                                       else if (1) {
-                                           if (!hasItem(s, open)) {
-                                               open.push(s);
-                                           } else {
-                                               //todo adjust priority
-
-                                           }
-                                       }
-                                   }*/
-                }
-            return path;
-        }
-    }
 };
+
 
 
 #endif //PROJ2_BESTFIRSTSEARCH_H

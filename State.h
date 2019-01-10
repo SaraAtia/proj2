@@ -11,17 +11,26 @@ class State {
     T position;
     double cost;
     State<T> *cameFrom;
+    bool visited;
 public:
     State(T state) {
         this->position = state;
         this->cost = 0;
         this->cameFrom = nullptr;
+        visited=false;
     }
 
     State(T position, double cost, State<T> *cameFrom) {
         this->position = position;
         this->cost = cost;
         this->cameFrom = cameFrom;
+        visited=false;
+    }
+    bool isVisited(){
+        return visited;
+    }
+    void setVisited(bool flag){
+        this->visited=flag;
     }
 
     bool equals(State<T> other) const {
@@ -47,11 +56,11 @@ public:
     }
 
 
-    const State<T> getCameFrom() const {
-        return *cameFrom;
+    State<T>* getCameFrom() {
+        return cameFrom;
     }
 
-    bool operator<(const State<T> &other) const {
+    bool operator<(const State<T> &other){
         return cost < other.cost;
     }
 

@@ -9,12 +9,14 @@
 
 
 #include <vector>
+#include <iostream>
 #include "Searchable.h"
 
 class Matrix: public Searchable<pair<int, int> > {
     using Point = pair<int, int>;
 
     vector<vector<double>> values;
+    vector<vector<State<Point >*>> states;
     State<Point> initialState;
     Point goalNode;
 public:
@@ -23,13 +25,32 @@ public:
         this->values = std::move(values);
         this->goalNode = out;
         initialState.setCost(get_price(in));
+        //create all states
+        vector<vector<State<Point >*>> states;
+        for(int i=0;i<this->values.size();i++){
+            vector<State<Point >*> row;
+            for(int j=0;j<this->values.at(i).size();j++){
+                if(i==0&&j==0){
+                    row.push_back(&this->initialState);
+                    continue;
+                }
+                State<Point> *p=new State<Point >(make_pair(i,j),this->values[i][j], nullptr);
+                row.push_back(p);
+            }
+            states.push_back(row);
+        }
+        this->states=states;
+    }
+    vector<vector<State<Point >*>> getSates() override{
+        return this->states;
     }
 
-
-    State<Point> getInitialState() override {
-        return this->initialState;
+    State<Point>* getInitialState() override {
+        return &this->initialState;
     }
-
+    State<Point>* getGoalState() override{
+        return this->states.at(this->goalNode.first).at(this->goalNode.second);
+    }
     Point getInitialNode()  override    {
         return this->initialState.getState();
     }
@@ -38,16 +59,106 @@ public:
     Point getGoalNode() override{
         return this->goalNode;
     }
-//TODO
 
-    list<State<Point>> getAllPossibleStates(State<pair<int,int>> s) override{
+    vector<State<Point>*> getAllPossibleStates(State<pair<int,int>> s) override{
         // TODO TODO SARAH
-        return list<State<Point>>();
+        vector<State<Point>*> list;
+        //matrix is in size n*n
+        int n=values.size();
+        int x=s.getState().first;
+        int y=s.getState().second;
+        if(x>=n||y>=n){
+            __throw_invalid_argument("invalid position in matrix");
+        }
+        //go right is valid
+        if(y+1!=n){
+            //State<Point> *p=new State<Point >(make_pair(x,y+1)/*,s.getCost(),&s*/);
+           list.push_back(states.at(x).at(y+1));
+        }
+        //go left is valid
+        if(y-1!=-1){
+            //State<Point> *p=new State<Point >(make_pair(x,y-1)/*,s.getCost(),&s*/);
+            //list.push_back(*p);
+            list.push_back(states.at(x).at(y-1));
+
+        }
+        //go up is valid
+        if(x-1!=-1){
+            //State<Point> *p=new State<Point >(make_pair(x-1,y)/*,s.getCost(),&s*/);
+            //list.push_back(*p);
+            list.push_back(states.at(x-1).at(y));
+
+        }
+        //go down is valid
+        if(x+1!=n){
+            //State<Point> *p=new State<Point >(make_pair(x+1,y)/*,s.getCost(),&s*/);
+            //list.push_back(*p);
+            list.push_back(states.at(x+1).at(y));
+
+        }
+
+        return list;
 
     }
 
     vector<vector<double >> getValues(){
         return this->values;
+    }
+    //1,2,3,!4,5,6,!%1,2,3,4,
+    static Matrix* readFromString(string s){
+        vector<double> row;
+        vector<int> pairs;
+        vector<vector<double >> mat;
+        string line=s;
+        size_t pos = 0;
+        size_t endpos = 0;
+        string token;
+        while(0!=line.find("%")) {
+            //endpos = line.find("!");
+            while(line.find("!")>line.find(",")) {
+                pos = line.find(",");
+                token = line.substr(0, pos);
+                row.push_back(stod(token));
+                line.erase(0, pos + 1);
+            }
+            mat.push_back(row);
+            line.erase(0, 1);
+        }
+        line.erase(0, 1);
+        while(line.size()!=0) {
+            pos = line.find(",");
+            token = line.substr(0, pos);
+            pairs.push_back(stoi(token));
+            line.erase(0, pos + 1);
+        }
+        return new Matrix(mat,make_pair(pairs.at(0),pairs.at(1)),make_pair(pairs.at(2),pairs.at(3)));
+    }
+    string to_String(){
+        string str="";
+        for(int i=0;i<values.size();i++) {
+            for (int j = 0; j < values.at(i).size(); j++) {
+                str+=to_string(values.at(i).at(j));
+                str+=",";
+            }
+            str+="!";
+        }
+        str+="%";
+        str+=to_string(this->getInitialNode().first);
+        str+=",";
+        str+=to_string(this->getInitialNode().second);
+        str+=",";
+        str+=to_string(this->getGoalNode().first);
+        str+=",";
+        str+=to_string(this->getGoalNode().second);
+        str+=",";
+        return str;
+    }
+
+    bool operator==( Matrix &other) {
+        return this->to_String()==other.to_String();
+    }
+    double getInitCost(pair<int, int> p)  {
+        return this->values[p.first][p.second];
     }
 private:
     double get_price(pair<int, int> p)  {

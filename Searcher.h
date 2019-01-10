@@ -12,7 +12,7 @@ template <class Node>
 class Searcher{
 public:
     virtual vector<Node> search(Searchable<Node> *s)=0;
-    //int getNumberOfNodesEvaluated();
+    virtual int getNumberOfNodesEvaluated()=0;
 
 };
 #endif //PROJ2_SEARCHER_H

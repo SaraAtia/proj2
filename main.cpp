@@ -8,6 +8,14 @@
 #include "Matrix.h"
 #include "SearchSolver.h"
 #include "BestFirstSearch.h"
+#include "ConvertSolver.h"
+//#include "Bfs.h"
+#include "FileCacheManager.h"
+#include "Dfs.h"
+#include "Astar.h"
+#include "Bfs.h"
+#include <stdlib.h>
+#include <time.h>
 /*namespace boot{
     class Main{
         int main(int argv, string argc[]) {
@@ -22,30 +30,128 @@
 }*/
 //using namespace std;
 int main() {
-    /*Solver<vector<State<pair<int,int>>*>,vector<string>>* cs = new ConvertSolver();
-    State<pair<int,int>>* a = new State<pair<int,int>>(pair<int,int>(0,0));
-    State<pair<int,int>>* b = new State<pair<int,int>>(pair<int,int>(1,0));
-    State<pair<int,int>>* c = new State<pair<int,int>>(pair<int,int>(1,1));
-    State<pair<int,int>>* d = new State<pair<int,int>>(pair<int,int>(0,1));
-    State<pair<int,int>>* e = new State<pair<int,int>>(pair<int,int>(0,0));
-    vector<State<pair<int,int>>*> vec;
-    vec.push_back(a) ;
-    vec.push_back(b);
-    vec.push_back(c);
-    vec.push_back(d);
-    vec.push_back(e);
-    vector<string> sol = cs->solve(vec);
-    for(string s:sol){
-        cout<< s<<", ";
-    }*/
+/*    Solver<vector<pair<int,int>>,string>* cs = new ConvertSolver();
+    vector<pair<int,int>> vec;
+    vec.push_back(make_pair(0,0)) ;
+    vec.push_back(make_pair(1,0));
+    vec.push_back(make_pair(1,1));
+    vec.push_back(make_pair(0,1));
+    vec.push_back(make_pair(0,0));
+    string sol = cs->solve(vec);
+    cout<<sol;*/
     typedef pair<int, int> Point;
-    vector<vector<double>> mat = {{1, 2, 3},
+/*    vector<vector<double>> mat = {{ 8, 1, 6, 2, 8, 2, 9, 1, 8, 7, 5, 9, 8, 1, 1, 3, 6},
+                                  { 4, 1, 1, 9,10, 1, 7, 9, 1, 1, 2, 8, 9, 3,10, 6, 7},
+                                  { 1, 7, 8, 9, 1, 1, 1,10,10, 1,10, 1, 1,10, 3, 7, 5},
+                                  { 1, 7, 6, 9,10, 5,10, 6, 3, 8, 1, 7, 9, 7, 1, 7, 1},
+                                  { 9, 1, 3, 5, 6, 1,10, 4, 1, 7, 4, 6, 6, 2, 8,10, 5},
+                                  { 2, 2, 1, 1, 6, 1, 6, 4, 9, 5, 6,10, 7, 3, 3,10, 5},
+                                  { 3, 1, 3,10, 1, 8,10, 4, 9, 4, 9, 1, 3, 1, 1, 3, 8},
+                                  { 4, 1, 4, 8, 9, 1, 9, 3, 7, 8, 5, 1, 5, 1, 4, 4, 1},
+                                  { 1, 3, 9, 5, 5,10, 2, 3, 2, 8,10, 3, 5, 8, 6, 3, 2},
+                                  { 1, 4, 8,10, 9, 6, 1, 4, 1, 1, 5, 2,10, 3, 6, 8, 4},
+                                  { 1, 6, 2, 7, 1, 6, 4, 3, 4, 7, 6, 2, 7, 1, 5,10, 1},
+                                  { 9, 3, 1, 8, 8, 6, 7, 8, 1, 1, 1, 6, 3, 6, 4, 6, 9},
+                                  { 9, 6, 3, 6, 7, 3, 9, 5,10, 6, 7, 1, 3, 6, 9,10, 2},
+                                  { 7, 4, 3, 5, 4, 3, 6, 6, 6, 7, 2, 8, 4, 1, 6, 8, 1},
+                                  { 1, 2, 1, 2, 5, 2, 7, 1, 9, 3, 3, 4,10, 2, 1, 7, 9},
+                                  { 6, 5, 1, 3, 4,10, 3, 3, 1, 1, 5, 8, 1, 1, 9, 1, 9},
+                                  { 3, 2, 2, 3, 1, 4, 9, 3, 5, 3, 6, 5, 8, 4, 7, 6, 7}
+    };*/
+/*    Searchable<Point> *searchable = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
+
+    vector<State<Point>> list1 = searchable->getAllPossibleStates(Point(1,0));
+    for(State<Point> s:list1){
+        cout<< s.getState().first<<", "<<s.getState().second<<endl;
+    }*/
+/*    vector<vector<double>> mat = {{1, 2},
+                                  {3, 4}};*/
+/*    vector<vector<double>> mat = {{ 4, 2, 9, 5, 7, 1, 7, 6, 3, 7, 8},
+            {4, 1,10, 8, 1, 1, 5, 5, 7, 8, 4},
+            {4, 5, 2, 8, 1, 1, 9, 3, 3, 1, 7},
+            {3, 3, 6, 2, 8, 9, 6, 8, 3, 5, 7},
+            {1, 3, 7, 3, 7,10, 4, 8, 9, 1, 1},
+            {7, 3, 2, 3, 5, 1, 2, 1, 6, 0, 9},
+            {6, 9, 8, 1,10, 3, 9, 8, 3, 4, 8},
+            {10, 8, 1, 2, 3, 8, 1,10,10, 2, 7},
+            {5, 7, 1, 8, 8, 8, 1, 3, 4, 5, 1},
+            {7, 7, 5,10, 8,10, 1, 6, 9, 9, 1},
+            {5,10, 1,10, 7, 7, 3,10, 8, 1, 6}};*/
+//todo test
+    vector<vector<vector<double>>> allmat;
+
+    int i=0;
+    srand(time(NULL));
+    while(i<10) {
+        vector<vector<double>> mat;
+        int n = rand() % 50 + 10;
+        for (int i = 0; i < n; i++) {
+            vector<double> row;
+            for(int j=0; j<n; j++){
+                row.push_back(rand() % 10 + 1);
+            }
+            mat.push_back(row);
+        }
+        allmat.push_back(mat);
+        Searchable<Point> *searchable = new Matrix(mat, make_pair(0, 0), make_pair(9, 9));
+        Solver<Searchable<Point> *, vector<Point>> *bestFirstSearch =
+                new SearchSolver<Point>(new BestFirstSearch<Point>());
+        bestFirstSearch->solve(searchable);
+        Solver<Searchable<Point> *, vector<Point>> *dfs =
+                new SearchSolver<Point>(new Dfs<Point>());
+        dfs->solve(searchable);
+        Solver<Searchable<Point> *, vector<Point>> *bfs =
+                new SearchSolver<Point>(new Bfs<Point>());
+        bfs->solve(searchable);
+        Solver<Searchable<Point> *, vector<Point>> *astar =
+                new SearchSolver<Point>(new Astar<Point>());
+        astar->solve(searchable);
+        i++;
+    }
+    cout<<"***********************************************"<<endl;
+    cout<<"10"<<endl;
+    for(int k=0;k<10;k++){
+        cout<<allmat.at(k).size()<<endl;
+        cout<<"0,0"<<endl;
+        cout<<allmat.at(k).size()-1<<","<<allmat.at(k).size()-1<<endl;
+        for (int i = 0; i < allmat.at(k).size(); i++) {
+            for(int j=0; j<allmat.at(k).size()-1; j++){
+                cout<<allmat.at(k).at(i).at(j)<<", ";
+            }
+            cout<<allmat.at(k).at(i).at(allmat.at(k).size()-1)<<endl;
+        }
+    }
+
+/*    vector<vector<double>> mat = {{1, 2, 10},
                                   {4, 5, 6},
                                   {7, 8, 9}};
     Searchable<Point> *searchable = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
-    // Searcher<pair<int,int>>* searcher=new BestFirstSearch<pair<int,int>>();
     Solver<Searchable<Point> *, vector<Point>> *solver =
             new SearchSolver<Point>(new BestFirstSearch<Point>());
-    solver->solve(searchable);
+    vector<Point> list1=solver->solve(searchable);
+    for(Point s:list1) {
+        cout << s.first << ", " << s.second << endl;
+    }*/
+
+    //Matrix::readFromString("1,2,3,!4,5,6,!%1,2,3,4,");
+/*    vector<vector<double>> mat = {{1, 2, 3},
+                                  {4, 5, 6},
+                                  {7, 8, 9}};
+    Matrix*m = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
+    string str=m->to_String();
+    cout<<(str);
+    m=Matrix::readFromString(str);*/
+/*    vector<vector<double>> mat = {{1, 2, 3},
+                                  {4, 5, 6},
+                                  {7, 8, 9}};
+    Matrix*m = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));*/
+/*FileCacheManager<string,string>* cacheManager=new FileCacheManager<string,string>();
+string s("Right,Down,Down,Right");
+cacheManager->saveProblem(m->to_String(),s);
+cacheManager->writeToFile("cache.txt");*/
+/*    FileCacheManager<string,string>* cacheManager=new FileCacheManager<string,string>();
+    //cacheManager->writeToFile("cache.txt");
+    cacheManager->readFromFile("cache.txt");
+    cout<<cacheManager->isSolved(m->to_String());*/
     return 0;
 }

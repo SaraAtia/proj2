@@ -11,38 +11,60 @@
 #include <vector>
 #include <map>
 #include <string>
-enum Problems{MATRIX, PATH, REVERS};
+#include <fstream>
+
 using namespace std;
-template<class P, class S>
-class FileCacheManager : public CacheManager<P, S>{
-    vector<map<string,S>>  problemsType;
+template<class Problem, class Solution>
+class FileCacheManager : public CacheManager<Problem, Solution>{
+    map<Problem,Solution>  cache;
 public:
-    bool isSolved(P *p) override{
-        //
+    bool isSolved(Problem p) override{
+        if(!cache.count(p))
+            return false;
+        return true;
     }
 
 
-    S* getSolution(P *p) override{
-        return nullptr;
+    Solution getSolution(Problem p) override{
+        return cache.at(p);
     }
 
 
-    void saveProblem(P *p, S *s) override{
-
-        //this->problemsType.at(p->to_string(),s)
+    void saveProblem(Problem p, Solution s) override{
+        cache.insert(make_pair(p,s));
     }
-/*
- * todo: every solution will have "convert to string" method
- *
- */
+    //todo read in the destructor
+    void writeToFile(const string& file_name){
+        fstream file;
+        file.open (file_name, std::fstream::in | std::fstream::out | std::fstream::app);
+        for(auto p:cache){
+            file<<(p.first)/*->to_String()*/;
+            file<< "$";
+            file<<(p.second)/*todo check->to_String()*/;
+            file<<"\n";
+        }
+        file.close();
+    }
+    void readFromFile(const string& file_name){
+        fstream file;
+        file.open (file_name, std::fstream::in | std::fstream::out | std::fstream::app);
+        ifstream infile(file_name);
+        if(file.peek() == std::ifstream::traits_type::eof()){
+            return;
+        }
+        string line;
+        size_t pos = 0;
+        string token;
+        while(getline(infile, line)){
+            pos = line.find("$");
+            token = line.substr(0, pos);
+            Problem problem=token;
+            line.erase(0, pos + 1);
+            Solution solution=line;
+            this->cache.insert(make_pair(problem,solution));
+        }
+    }
 };
-//todo: choose data base, and format for saving data in the file
-/*
- * format - 3 col' separated by '?':
- * first index for problem type flag as letter
- * second index for problem info - will be read until '?'
- * third - solution
- */
 /*
  * in the distructor we'll update the file
  */

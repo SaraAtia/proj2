@@ -4,8 +4,8 @@
 
 #include "ConvertSolver.h"
 //todo: to convert from index path to instruction - if went down on row index put"Down"..
-vector<string> ConvertSolver::solve(vector<pair<int,int>> path){
-    vector<string> instructions;
+string ConvertSolver::solve(vector<pair<int,int>> path){
+    string instructions="";
     for(int i = 1 ; i < path.size(); i++){
         int xSrc = path[i-1].first;
         int ySrc = path[i-1].second;
@@ -14,18 +14,19 @@ vector<string> ConvertSolver::solve(vector<pair<int,int>> path){
         // no change in x
         if(xDes==xSrc){
             if(yDes == ySrc+1){
-                instructions.push_back("Right");
+                instructions+="Right,";
             } else if(yDes == ySrc-1){
-                instructions.push_back("Left");
+                instructions+="Left,";
             }
             // no change in y
         } else if(yDes == ySrc){
             if(xDes == xSrc+1){
-                instructions.push_back("Down");
+                instructions+="Down,";
             } else if(xDes == xSrc-1){
-                instructions.push_back("Up");
+                instructions+="Up,";
             }
         }
     }
+    instructions = instructions.substr(0, instructions.size()-1);
     return instructions;
 }
