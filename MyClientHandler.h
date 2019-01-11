@@ -11,6 +11,7 @@
 #include "Matrix.h"
 #include <unistd.h>
 #include <vector>
+using Point = pair<int,int>;
 struct ClientData{
     int socketID;
     vector<vector<string>> matrix;
@@ -22,6 +23,19 @@ struct ClientData{
 };
 void readLine(ClientData* clientData);
 void getAllInfo(ClientData* clientData);
+Point convertToPoint(string pointStr){
+
+}
+vector<vector<double>> convertToMatrix(vector<vector<string>> matrixStr){
+    string bigLine;
+    string entryPoint;
+    string exitPoint;
+    for(vector<string> line: matrixStr){
+        bigLine += "!" + line[0];
+    }
+    bigLine.erase(0,1);
+    bigLine += "!%"+ entryPoint + exitPoint+",";
+}
 template <class P, class S>
 class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
@@ -40,16 +54,16 @@ public:
         ClientData* clientData = (ClientData*)clientInfo;
         getAllInfo(clientData);
         //convert data to matrix with its info;
-        vector<vector<double>> vec = convertToDouble(clientData->matrix);
+        vector<vector<double>> vec = convertToMatrix(clientData->matrix);
         Point in = convertToPoint(clientData->entryPoint);
         Point out = convertToPoint(clientData->exitPoint);
-        Matrix mat = new Matrix(vec, in, out);
+        Matrix* mat = new Matrix(vec, in, out);
         if(cm->isSolved(mat)){
             S solution = cm->getSolution(mat);
             send(clientData->socketID, solution, sizeof(solution), 0);
         } else {
             S solution = solver->solve(mat);
-            cm->saveProblem(mat.to_String(), solution);
+            cm->saveProblem(mat->to_String(), solution);
             send(clientData->socketID, solution, sizeof(solution), 0);
         }
 
