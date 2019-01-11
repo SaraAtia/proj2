@@ -8,6 +8,7 @@
 
 #include "ClientHandler.h"
 #include "CacheManager.h"
+#include "Matrix.h"
 #include <unistd.h>
 #include <vector>
 struct ClientData{
@@ -37,8 +38,21 @@ public:
         void* clientInfo;
 
         ClientData* clientData = (ClientData*)clientInfo;
+        getAllInfo(clientData);
+        //convert data to matrix with its info;
+        vector<vector<double>> vec = convertToDouble(clientData->matrix);
+        Point in = convertToPoint(clientData->entryPoint);
+        Point out = convertToPoint(clientData->exitPoint);
+        Matrix mat = new Matrix(vec, in, out);
+        if(cm->isSolved(mat)){
+            S solution = cm->getSolution(mat);
+            send(clientData->socketID, solution, sizeof(solution), 0);
+        } else {
+            S solution = solver->solve(mat);
+            cm->saveProblem(mat.to_String(), solution);
+            send(clientData->socketID, solution, sizeof(solution), 0);
+        }
 
-        getAllInfo(socketID, clientData);
     }
 
 };
