@@ -2,50 +2,50 @@
 // Created by sara on 30/12/18.
 //
 
-#include <unistd.h>
-#include <vector>
+
 #include "MyClientHandler.h"
 
 // get info and insert to vector<vector<string>> (after sending to lexer)
 // check if info is solved in "Cache Manager" - if not send to Solver
 // if you solved - add new solution to map (FileCacheManger)
 // send solution
-string readLine(int socketID){
-    string line;
-    char buffer[1];
-    while(read(socketID, buffer, 1)!=0){
-        if(buffer[0] =='\n')
+void readLine(ClientData* clientData){
+    //todo: need to be parameters from outside
+    clientData->buffer = new char;
+    clientData->line.clear();
+    int i;
+    for(i = 0; read(clientData->socketID, clientData->buffer+i, 1)!=0; i++){
+        if(*(clientData->buffer+i)=='\n'){
             break;
-        line += buffer[0];
+        }
     }
-    return line;
+    for(int j = 0; j < i; j++){
+        clientData->line += *(clientData->buffer+j);
+    }
+    delete(clientData->buffer);
 }
-vector<vector<string>> getAllInfo(int socketID){
-    vector<vector<string>> matrixInfo;
+void getAllInfo(ClientData* clientData){
     int flag = 1;
-    string line;
+
     while(flag){
-        line = readLine(socketID);
-        if(line == "end"){
+        readLine(clientData);
+        if(clientData->line == "end"){
             flag--;
             continue;
         }
         vector<string> lineRead;
-        lineRead.push_back(line);
-        matrixInfo.push_back(lineRead);
+        clientData->lineRead.push_back(clientData->line);
+        clientData->matrix.push_back(clientData->lineRead);
     }
     vector<string> entryPoint;
-    entryPoint.push_back(readLine(socketID));
-    matrixInfo.push_back(entryPoint);
-    vector<string> exitPoint;
-    exitPoint.push_back(readLine(socketID));
-    matrixInfo.push_back(exitPoint);
-    return matrixInfo;
+    readLine(clientData);
+    clientData->entryPoint = clientData->line;
+    readLine(clientData);
+    clientData->exitPoint = clientData->line;
 }
-void handleClient(int socketID) {
-    vector<vector<string>> matrixInfo = getAllInfo(socketID);
-    string exitPoint = matrixInfo.back()[0];
-    matrixInfo.pop_back();
-    string entryPoint = matrixInfo.back()[0];
-    matrixInfo.pop_back();
-}
+
+/**
+ * in order to separate buffer and info of every thread the
+ * function will receive struct which will have all data-structures needed to store it's info
+ * @param socketID
+ */

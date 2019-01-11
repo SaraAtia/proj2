@@ -20,7 +20,7 @@ class MySerialServer : public Server{
          */
     }
 
-    void stop() override {
+    void stop(std::stack<pthread_t> threads) override {
 
     }
 

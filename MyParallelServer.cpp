@@ -2,13 +2,12 @@
 // Created by sara on 31/12/18.
 //
 
-//#include <bits/socket.h>
 #include <netinet/in.h>
-
 #include <iostream>
 #include <string>
 #include <unistd.h>
 #include "MyParallelServer.h"
+
 struct MyClientParams{
     ClientHandler* cl;
     int socketID;
