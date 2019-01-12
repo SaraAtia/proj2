@@ -47,14 +47,13 @@ public:
             n->setVisited(true);
             if(n==searchable->getGoalState()){ break;}
             for(State<Node>* s : searchable->getAllPossibleStates(*n)){
+                if(s->getCost()==-1){ continue;}
                 if(!s->isVisited()&&!hasItem(open,s)){
                     s->setCameFrom(n);
                     s->setCost(s->getCost() + n->getCost());
                     open.push(s);
                 }
                 else if(!s->isVisited() ){
-                    //for the first node
-                    //if(n==searchable->getInitialState()) {
                         if ((s->getCost() + n->getCost()) < (s->getCost() + s->getCameFrom()->getCost())) {
                             if (!hasItem(open, s))
                                 open.push(s);

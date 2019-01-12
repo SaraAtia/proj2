@@ -157,7 +157,7 @@ public:
     bool operator==( Matrix &other) {
         return this->to_String()==other.to_String();
     }
-    double getInitCost(pair<int, int> p)  {
+    double getInitCost(pair<int, int> p)  override{
         return this->values[p.first][p.second];
     }
 private:
