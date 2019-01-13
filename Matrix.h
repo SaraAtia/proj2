@@ -61,7 +61,6 @@ public:
     }
 
     vector<State<Point>*> getAllPossibleStates(State<pair<int,int>> s) override{
-        // TODO TODO SARAH
         vector<State<Point>*> list;
         //matrix is in size n*n
         int n=values.size();
@@ -70,41 +69,35 @@ public:
         if(x>=n||y>=n){
             __throw_invalid_argument("invalid position in matrix");
         }
-        //go right is valid
-        if(y+1!=n){
-            //State<Point> *p=new State<Point >(make_pair(x,y+1)/*,s.getCost(),&s*/);
-           list.push_back(states.at(x).at(y+1));
+        //go up is valid
+        if(x-1!=-1){
+            list.push_back(states.at(x-1).at(y));
         }
         //go left is valid
         if(y-1!=-1){
-            //State<Point> *p=new State<Point >(make_pair(x,y-1)/*,s.getCost(),&s*/);
-            //list.push_back(*p);
             list.push_back(states.at(x).at(y-1));
 
         }
-        //go up is valid
-        if(x-1!=-1){
-            //State<Point> *p=new State<Point >(make_pair(x-1,y)/*,s.getCost(),&s*/);
-            //list.push_back(*p);
-            list.push_back(states.at(x-1).at(y));
-
+        //go right is valid
+        if(y+1!=n){
+            list.push_back(states.at(x).at(y+1));
         }
         //go down is valid
         if(x+1!=n){
-            //State<Point> *p=new State<Point >(make_pair(x+1,y)/*,s.getCost(),&s*/);
-            //list.push_back(*p);
             list.push_back(states.at(x+1).at(y));
-
         }
-
         return list;
-
     }
-
+    /*
+    * return the values of the matrix
+    */
     vector<vector<double >> getValues(){
         return this->values;
     }
     //1,2,3,!4,5,6,!%1,2,3,4,
+    /*
+     * convert string to matrix
+     */
     static Matrix* readFromString(string s){
         vector<double> row;
         vector<int> pairs;
@@ -133,6 +126,9 @@ public:
         }
         return new Matrix(mat,make_pair(pairs.at(0),pairs.at(1)),make_pair(pairs.at(2),pairs.at(3)));
     }
+    /*
+     * convert matrix to string
+     */
     string to_String(){
         string str="";
         for(int i=0;i<values.size();i++) {
@@ -157,7 +153,7 @@ public:
     bool operator==( Matrix &other) {
         return this->to_String()==other.to_String();
     }
-    double getInitCost(pair<int, int> p)  {
+    double getInitCost(pair<int, int> p)  override{
         return this->values[p.first][p.second];
     }
 private:

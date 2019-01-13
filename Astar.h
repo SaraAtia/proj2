@@ -16,14 +16,16 @@ public:
         return this->NumberOfNodesEvaluated;
     }
     double f(vector<vector<int>>h,State<Node>* son,Searchable<Node> *searchable){
-        return h[son->getState().first][son->getState().second]+ g(son,searchable);
+        int a=h[son->getState().first][son->getState().second];
+        int b=g(son,searchable);
+        return a+ b;
     }
 
     double g(State<Node>* state,Searchable<Node> *searchable){
         if(state==searchable->getInitialState()){
             return state->getCost();
         }
-        return state->getCameFrom()->getCost()+state->getCost();
+        return state->getCameFrom()->getCost()+searchable->getInitCost(state->getState());
     }
     int calch(pair<int,int> st,Searchable<Node> *searchable){
         int n=searchable->getSates().size();
@@ -33,8 +35,8 @@ public:
         return (n-1-x)+(m-1-y);
     }
 
-    bool findNode(map<double ,State<Node>*> open, State<Node>* node) {
-        typename std::map<double ,State<Node>*>::iterator it;
+    bool findNode(multimap<double ,State<Node>*> open, State<Node>* node) {
+        typename std::multimap<double ,State<Node>*>::iterator it;
         for ( it=open.begin(); it!=open.end(); ++it){
             if(it->second==node){
                 return true;
@@ -43,8 +45,8 @@ public:
         return false;
 
     }
-    void deleteNode(map<double ,State<Node>*>* open, State<Node>* node) {
-        typename std::map<double ,State<Node>*>::iterator it;
+    void deleteNode(multimap<double ,State<Node>*>* open, State<Node>* node) {
+        typename std::multimap<double ,State<Node>*>::iterator it;
         for ( it=open->begin(); it!=open->end(); ++it){
             if(it->second==node){
                 open->erase(it);
@@ -73,7 +75,7 @@ public:
             }
             h.push_back(row);
         }
-        std::map<double,State<Node>*> open;
+        std::multimap<double,State<Node>*> open;
         list<State<Node>*> closed;
         State<Node>* node_current;
         State<Node>* initial=searchable->getInitialState();
@@ -88,24 +90,20 @@ public:
             vector<State<Node>*> neighbours=searchable->getAllPossibleStates(*node_current);
             for(State<Node>* neighbour:neighbours){
                 if(neighbour->getCost()==-1){ continue;}
-                double currentval = node_current->getCost() +neighbour->getCost();
+                double currentval = node_current->getCost() +searchable->getInitCost(neighbour->getState());
                 //in open
                 if(findNode(open,neighbour)) {
                     if (g(neighbour,searchable) <= currentval) {continue; }
-                // in closed
+                    neighbour->setCameFrom(node_current);
+                    // in closed
                 }else if (std::find(closed.begin(), closed.end(), neighbour) != closed.end()){
-                            if(g(neighbour,searchable) <= currentval){ continue;}
-                            closed.remove(neighbour);
-                            neighbour->setCameFrom(node_current);
-                            open.insert(make_pair(f(h,neighbour,searchable),neighbour));
-                        //not in close and not in open
+                        continue;
+                    //not in close and not in open
                         }else{
                             neighbour->setCameFrom(node_current);
                             open.insert(make_pair(f(h,neighbour,searchable),neighbour));
                         }
-                            neighbour->setCameFrom(node_current);
-                            //todo check if it right
-                            neighbour->setCost(node_current->getCost() + neighbour->getCost());
+                            neighbour->setCost(currentval);
                     }
                  closed.push_back(node_current);
 
@@ -114,20 +112,26 @@ public:
             __throw_invalid_argument("not find a way");
         }
         //return path
+        return returnPath(searchable);
+
+
+    }
+    vector<Node> returnPath(Searchable<Node> *searchable) {
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){
+            //cout <<state.getCost()<<",";
             path.push_back(state.getState());
             state=*(state.getCameFrom());
         }
+        //cout <<searchable->getInitialState()->getCost()<<",";
         path.push_back(searchable->getInitialNode());
         //cout<<this->NumberOfNodesEvaluated<<endl;
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
-
     }
 
-};
+    };
 
 
 #endif //PROJ2_ASTAR_H

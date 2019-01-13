@@ -36,6 +36,7 @@ public:
             this->NumberOfNodesEvaluated++;
             State<Node> *currnode=queue.front();
             queue.pop();
+            if(currnode==searchable->getGoalState()){ break;}
             vector<State<Node>*> neighbours=searchable->getAllPossibleStates(*currnode);
             //for(State<Node> neighbor:neighbours){
             for(int i=0;i<neighbours.size();i++){
@@ -47,8 +48,12 @@ public:
                 }
             }
         }
-        int sum=0;
         //return path
+        return returnPath(searchable);
+
+    }
+    vector<Node> returnPath(Searchable<Node> *searchable){
+        int sum=0;
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){
@@ -61,6 +66,7 @@ public:
         cout<<sum<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }
+
 };
 
 

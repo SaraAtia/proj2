@@ -47,14 +47,13 @@ public:
             n->setVisited(true);
             if(n==searchable->getGoalState()){ break;}
             for(State<Node>* s : searchable->getAllPossibleStates(*n)){
+                if(s->getCost()==-1){ continue;}
                 if(!s->isVisited()&&!hasItem(open,s)){
                     s->setCameFrom(n);
                     s->setCost(s->getCost() + n->getCost());
                     open.push(s);
                 }
                 else if(!s->isVisited() ){
-                    //for the first node
-                    //if(n==searchable->getInitialState()) {
                         if ((s->getCost() + n->getCost()) < (s->getCost() + s->getCameFrom()->getCost())) {
                             if (!hasItem(open, s))
                                 open.push(s);
@@ -67,6 +66,10 @@ public:
             }
         }
         //return path
+        return returnPath(searchable);
+
+    }
+    vector<Node> returnPath(Searchable<Node> *searchable) {
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){
@@ -77,7 +80,7 @@ public:
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }
-    bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
+        bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
         std::queue<State<Node>*> temp;
         bool flag=false;
         while(!open.empty()){
