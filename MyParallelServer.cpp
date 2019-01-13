@@ -56,7 +56,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
         sockets.push(newClient);
         MyClientParams* MCP = new MyClientParams();
         MCP->cl = clientHandler;
-        MCP->socketID = newClient;
+        MCP->socketID = newClient;//hello paz
         pthread_t clientThread;
         if(pthread_create(&clientThread, nullptr, threadFunc, MCP)!=0){
             __throw_invalid_argument("ERROR in creating thread"); //todo: what to do if fail
