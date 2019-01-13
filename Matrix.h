@@ -70,11 +70,14 @@ public:
         if(x>=n||y>=n){
             __throw_invalid_argument("invalid position in matrix");
         }
-        //go right is valid
-        if(y+1!=n){
-            //State<Point> *p=new State<Point >(make_pair(x,y+1)/*,s.getCost(),&s*/);
-           list.push_back(states.at(x).at(y+1));
+        //go up is valid
+        if(x-1!=-1){
+            //State<Point> *p=new State<Point >(make_pair(x-1,y)/*,s.getCost(),&s*/);
+            //list.push_back(*p);
+            list.push_back(states.at(x-1).at(y));
+
         }
+
         //go left is valid
         if(y-1!=-1){
             //State<Point> *p=new State<Point >(make_pair(x,y-1)/*,s.getCost(),&s*/);
@@ -82,12 +85,10 @@ public:
             list.push_back(states.at(x).at(y-1));
 
         }
-        //go up is valid
-        if(x-1!=-1){
-            //State<Point> *p=new State<Point >(make_pair(x-1,y)/*,s.getCost(),&s*/);
-            //list.push_back(*p);
-            list.push_back(states.at(x-1).at(y));
-
+        //go right is valid
+        if(y+1!=n){
+            //State<Point> *p=new State<Point >(make_pair(x,y+1)/*,s.getCost(),&s*/);
+            list.push_back(states.at(x).at(y+1));
         }
         //go down is valid
         if(x+1!=n){

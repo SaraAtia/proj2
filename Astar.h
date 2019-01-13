@@ -94,20 +94,15 @@ public:
                 //in open
                 if(findNode(open,neighbour)) {
                     if (g(neighbour,searchable) <= currentval) {continue; }
-                // in closed
+                    neighbour->setCameFrom(node_current);
+                    // in closed
                 }else if (std::find(closed.begin(), closed.end(), neighbour) != closed.end()){
-                            if(g(neighbour,searchable) <= currentval){ continue;}
-                            closed.remove(neighbour);
-                            neighbour->setCameFrom(node_current);
-                            open.insert(make_pair(f(h,neighbour,searchable),neighbour));
-                            this->NumberOfNodesEvaluated--;
+                        continue;
                     //not in close and not in open
                         }else{
                             neighbour->setCameFrom(node_current);
                             open.insert(make_pair(f(h,neighbour,searchable),neighbour));
                         }
-                            neighbour->setCameFrom(node_current);
-                            //todo check if it right
                             neighbour->setCost(currentval);
                     }
                  closed.push_back(node_current);
