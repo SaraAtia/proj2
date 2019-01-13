@@ -5,43 +5,60 @@
 
 #include "MyClientHandler.h"
 
+#define SIZE 256
+
+
+string join(vector<string> s, string sym)
+{
+    if (s.empty()) return string();
+    string output;
+    for (int i = 0; i < s.size() - 1; ++i)  {
+        output += s[i] + sym;
+    }
+    output += s[s.size() - 1];
+    return output;
+}
 // get info and insert to vector<vector<string>> (after sending to lexer)
 // check if info is solved in "Cache Manager" - if not send to Solver
 // if you solved - add new solution to map (FileCacheManger)
 // send solution
-void readLine(ClientData* clientData){
+string SocketReader::readLine(){
     //todo: need to be parameters from outside
-    clientData->buffer = new char;
-    clientData->line.clear();
-    int i;
-    for(i = 0; read(clientData->socketID, clientData->buffer+i, 1)!=0; i++){
-        if(*(clientData->buffer+i)=='\n'){
-            break;
+    char buffer[SIZE];
+    ssize_t find_pos;
+    while ((find_pos = this->buffer.find('\n')) == string::npos)   {
+        ssize_t num_read;
+        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    {
+            perror("error on read");
+            exit(1);
+        }   else if (num_read == 0) {
+            // TODO connection closed by peer
         }
+        buffer[num_read] = 0;
+        this->buffer += string(buffer);
     }
-    for(int j = 0; j < i; j++){
-        clientData->line += *(clientData->buffer+j);
-    }
-    delete(clientData->buffer);
+    string output = this->buffer.substr(0, find_pos);
+    this->buffer = this->buffer.substr(find_pos + 1);
+    return output;
 }
-void getAllInfo(ClientData* clientData){
-    int flag = 1;
 
-    while(flag){
-        readLine(clientData);
-        if(clientData->line == "end"){
-            flag--;
-            continue;
-        }
-        vector<string> lineRead;
-        clientData->lineRead.push_back(clientData->line);
-        clientData->matrix.push_back(clientData->lineRead);
-    }
-    vector<string> entryPoint;
-    readLine(clientData);
-    clientData->entryPoint = clientData->line;
-    readLine(clientData);
-    clientData->exitPoint = clientData->line;
+
+tuple<vector<string>, string, string> getAllInfo(int socketID){
+
+    SocketReader reader(socketID);
+    string in;
+    vector<string> lines_read;
+    do{
+        in = reader.readLine();
+        lines_read.push_back(in); //todo: change sign
+    } while (in != "end");
+
+    string exitPoint = lines_read[lines_read.size()-1];
+    lines_read.pop_back();
+    string entryPoint = lines_read[lines_read.size()-1];
+    lines_read.pop_back();
+
+    return make_tuple(lines_read, entryPoint, exitPoint);
 }
 
 /**

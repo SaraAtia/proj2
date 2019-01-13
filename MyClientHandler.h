@@ -11,31 +11,30 @@
 #include "Matrix.h"
 #include <unistd.h>
 #include <vector>
+#include <tuple>
+
+
 using Point = pair<int,int>;
-struct ClientData{
-    int socketID;
-    vector<vector<string>> matrix;
-    vector<string> lineRead;
-    char* buffer;
-    string line;
-    string entryPoint;
-    string exitPoint;
-};
-void readLine(ClientData* clientData);
-void getAllInfo(ClientData* clientData);
+
+string join(vector<string> s, string sym);
+
+tuple<vector<string>, string, string> getAllInfo(int socketID);
 Point convertToPoint(string pointStr){
 
 }
-vector<vector<double>> convertToMatrix(vector<vector<string>> matrixStr){
-    string bigLine;
-    string entryPoint;
-    string exitPoint;
-    for(vector<string> line: matrixStr){
-        bigLine += "!" + line[0];
+
+class SocketReader
+{
+    int sock_id;
+    string buffer;
+public:
+    SocketReader(int sock_id) : sock_id(sock_id)    {
+
     }
-    bigLine.erase(0,1);
-    bigLine += "!%"+ entryPoint + exitPoint+",";
-}
+
+    string readLine();
+};
+
 template <class P, class S>
 class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
@@ -48,23 +47,22 @@ public:
         this->cm = cm;
     }
 
-    void handleClient(/*void* clientInfo*/int socketID) override{
-        void* clientInfo;
+    void handleClient(int socketID) override{
 
-        ClientData* clientData = (ClientData*)clientInfo;
-        getAllInfo(clientData);
+        auto result = getAllInfo(socketID);
         //convert data to matrix with its info;
-        vector<vector<double>> vec = convertToMatrix(clientData->matrix);
-        Point in = convertToPoint(clientData->entryPoint);
-        Point out = convertToPoint(clientData->exitPoint);
-        Matrix* mat = new Matrix(vec, in, out);
+        string str = join(get<0>(result), "!");
+        Point in = convertToPoint(get<1>(result));
+        Point out = convertToPoint(get<2>(result));
+
+        Matrix* mat = Matrix::readFromString(str);
         if(cm->isSolved(mat)){
             S solution = cm->getSolution(mat);
-            send(clientData->socketID, solution, sizeof(solution), 0);
+            send(socketID, solution, sizeof(solution), 0);
         } else {
             S solution = solver->solve(mat);
             cm->saveProblem(mat->to_String(), solution);
-            send(clientData->socketID, solution, sizeof(solution), 0);
+            send(socketID, solution, sizeof(solution), 0);
         }
 
     }
