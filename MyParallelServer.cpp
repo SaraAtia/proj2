@@ -45,13 +45,14 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
     while(true){
         // stack of sockets/threads?
         int newClient = accept(mainSocketID, (struct sockaddr *) &client, (socklen_t*)&clilen);
-        if (newClient < 0)
+        if (newClient < 0) {
             if(errno == EWOULDBLOCK){
                 cout << "timeout!" << endl;
                 break;
             } else {
                 __throw_invalid_argument("ERROR on accept");
             }
+        }
         sockets.push(newClient);
         MyClientParams* MCP = new MyClientParams();
         MCP->cl = clientHandler;
