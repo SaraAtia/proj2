@@ -100,7 +100,8 @@ public:
                             closed.remove(neighbour);
                             neighbour->setCameFrom(node_current);
                             open.insert(make_pair(f(h,neighbour,searchable),neighbour));
-                        //not in close and not in open
+                            this->NumberOfNodesEvaluated--;
+                    //not in close and not in open
                         }else{
                             neighbour->setCameFrom(node_current);
                             open.insert(make_pair(f(h,neighbour,searchable),neighbour));
@@ -116,6 +117,11 @@ public:
             __throw_invalid_argument("not find a way");
         }
         //return path
+        return returnPath(searchable);
+
+
+    }
+    vector<Node> returnPath(Searchable<Node> *searchable) {
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){
@@ -128,10 +134,9 @@ public:
         //cout<<this->NumberOfNodesEvaluated<<endl;
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
-
     }
 
-};
+    };
 
 
 #endif //PROJ2_ASTAR_H

@@ -44,8 +44,12 @@ public:
                 }
             }
         }
-        int sum=0;
         //return path
+        return returnPath(searchable);
+
+        }
+        vector<Node> returnPath(Searchable<Node> *searchable){
+        int sum=0;
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){

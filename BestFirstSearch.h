@@ -66,6 +66,10 @@ public:
             }
         }
         //return path
+        return returnPath(searchable);
+
+    }
+    vector<Node> returnPath(Searchable<Node> *searchable) {
         State<Node> state =*(searchable->getGoalState());
         vector<Node> path;
         while(state.getCameFrom() != nullptr){
@@ -76,7 +80,7 @@ public:
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }
-    bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
+        bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
         std::queue<State<Node>*> temp;
         bool flag=false;
         while(!open.empty()){
