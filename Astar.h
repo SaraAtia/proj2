@@ -5,6 +5,8 @@
 #ifndef PROJ2_ASTAR_H
 #define PROJ2_ASTAR_H
 
+// Empirical experiment
+
 #include <map>
 #include <iostream>
 #include "Searcher.h"
