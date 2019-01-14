@@ -23,7 +23,7 @@ string SocketReader::readLine(){
     ssize_t find_pos;
     while ((find_pos = this->buffer.find('\n')) == string::npos)   {
         ssize_t num_read;
-        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    { // todo: ignore spaces
+        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    {
             perror("error on read");
             exit(1);
         }   else if (num_read == 0) {
@@ -35,6 +35,7 @@ string SocketReader::readLine(){
     string output = this->buffer.substr(0, find_pos);
     this->buffer = this->buffer.substr(find_pos + 1);
     string line;
+    //delete spaces
     for(int i=0;i<output.length();i++){
         if(output.at(i)!=' ')
             line+=output.at(i);
@@ -52,7 +53,7 @@ tuple<vector<string>, string, string> getAllInfo(int socketID){
         in = reader.readLine();
         lines_read.push_back(in); //todo: change sign
     } while (in != "end");
-
+    lines_read.pop_back();
     string exitPoint = lines_read[lines_read.size()-1];
     lines_read.pop_back();
     string entryPoint = lines_read[lines_read.size()-1];
@@ -60,7 +61,6 @@ tuple<vector<string>, string, string> getAllInfo(int socketID){
 
     return make_tuple(lines_read, entryPoint, exitPoint);
 }
-
 /**
  * in order to separate buffer and info of every thread the
  * function will receive struct which will have all data-structures needed to store it's info

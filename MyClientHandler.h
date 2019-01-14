@@ -57,20 +57,23 @@ public:
         //convert data to matrix with its info;
         string str = join(get<0>(result), ",!");
 
-        string in = /*convertToPoint(*/get<1>(result);
-        string out = /*convertToPoint(*/get<2>(result);
+        string in = get<1>(result);
+        string out = get<2>(result);
         str+=+"%"+in+","+out+",";
+        string solution;
         if(cm->isSolved(str)){
-            string solution = cm->getSolution(str);
-            send(socketID, solution.c_str(), sizeof(solution), 0);
-            close(socketID);
+            solution = cm->getSolution(str);
+            cout<<"already solved";
+
         } else {
             Matrix* mat = Matrix::readFromString(str);
-            string solution = solver->solve(mat);
+            solution = solver->solve(mat);
             cm->saveProblem(mat->to_String(), solution);
-            send(socketID, solution.c_str(), sizeof(solution), 0);
-            close(socketID);
+            cout<<"solving...";
         }
+        solution+="\r\n";
+        send(socketID, solution.c_str(), sizeof(solution), 0);
+        close(socketID);
 
     }
 

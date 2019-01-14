@@ -60,7 +60,8 @@ public:
         }
         sum+=state.getCost();
         path.push_back(searchable->getInitialNode());
-        //todo delete
+            std::reverse(path.begin(),path.end());
+            //todo delete
         cout<<sum<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }

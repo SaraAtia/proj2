@@ -106,6 +106,7 @@ public:
         size_t pos = 0;
         size_t endpos = 0;
         string token;
+        //read the matrix
         while(0!=line.find("%")) {
             //endpos = line.find("!");
             while(line.find("!")>line.find(",")) {
@@ -117,8 +118,9 @@ public:
             mat.push_back(row);
             line.erase(0, 1);
         }
+        //delete %
         line.erase(0, 1);
-        while(line.size()!=0) {
+        for(int i=0;i<4;i++) {
             pos = line.find(",");
             token = line.substr(0, pos);
             pairs.push_back(stoi(token));

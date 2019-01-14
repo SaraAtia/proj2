@@ -21,8 +21,13 @@ public:
     }
     string solve(Matrix* matrix) override {
         vector<T> path= this->searchSolver->solve(matrix);
+
 //        vector<pair<int, int>> path= this->searchSolver->solve(matrix);
         return convertSolver->solve(path);
+    }
+    ~ShortestPathSolver(){
+        delete searchSolver;
+        delete convertSolver;
     }
 };
 

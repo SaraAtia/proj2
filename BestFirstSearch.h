@@ -77,6 +77,7 @@ public:
             state=*(state.getCameFrom());
         }
         path.push_back(searchable->getInitialNode());
+        std::reverse(path.begin(),path.end());
         //todo delete
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
