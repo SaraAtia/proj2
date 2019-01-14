@@ -18,12 +18,7 @@ string join(vector<string> s, string sym)
     //output += s[s.size() - 1];
     return output;
 }
-// get info and insert to vector<vector<string>> (after sending to lexer)
-// check if info is solved in "Cache Manager" - if not send to Solver
-// if you solved - add new solution to map (FileCacheManger)
-// send solution
 string SocketReader::readLine(){
-    //todo: need to be parameters from outside
     char buffer[SIZE];
     ssize_t find_pos;
     while ((find_pos = this->buffer.find('\n')) == string::npos)   {
