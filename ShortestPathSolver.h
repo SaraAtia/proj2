@@ -7,18 +7,22 @@
 
 
 #include <vector>
-#include "Solver.h"
 #include "SearchSolver.h"
 #include "ConvertSolver.h"
 #include "Matrix.h"
-
-template <class Node>
-class ShortestPathSolver : public Solver<Matrix, string> {
-    SearchSolver<Node>* searchSolver;
+template <class T>
+class ShortestPathSolver : public Solver<Matrix*, string> {
+    SearchSolver<pair<int,int>>* searchSolver;
     ConvertSolver* convertSolver;
 public:
-    string solve(Matrix matrix) override {
-        vector<Node> path=searchSolver->solve(matrix);
+    explicit ShortestPathSolver(Searcher<pair<int,int>>* searcher)
+    :searchSolver(new SearchSolver<pair<int,int>>(searcher)), convertSolver(new ConvertSolver()){
+//        this->searchSolver = new SearchSolver<pair<int,int>>(searcher);
+//        this->convertSolver = new ConvertSolver();
+    }
+    string solve(Matrix* matrix) override {
+        vector<T> path= this->searchSolver->solve(matrix);
+//        vector<pair<int, int>> path= this->searchSolver->solve(matrix);
         return convertSolver->solve(path);
     }
 };

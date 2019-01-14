@@ -9,7 +9,7 @@
 #include "Searcher.h"
 
 template <class Node>
-class SearchSolver : public Solver<Searchable<Node> *, vector<Node>>{
+class SearchSolver : public Solver<Searchable<Node>* , vector<Node>>{
     Searcher<Node>* searcher; // an algorithm to search
 public:
     explicit SearchSolver(Searcher<Node>* searcher){

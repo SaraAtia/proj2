@@ -21,15 +21,21 @@
 #include <time.h>
 namespace boot{
     class Main{
-        int main(int argv, string argc[]) {
+    public:
+        static int main(int argc, char* argv[]) {
             server_side::Server* s = new MyParallelServer();
-            Solver<Matrix, string>* solver = new ShortestPathSolver<pair<int,int>>();
-            CacheManager<Matrix, string> *manager = new FileCacheManager<Matrix, string>();
-            ClientHandler* clientHandler = new MyClientHandler<Matrix, string>(solver,manager);
-            s->open(stoi(argc[0]), clientHandler);
+            auto * algorithm = new Astar<pair<int,int>>();
+            Solver<Matrix*, string>* solver = new ShortestPathSolver<pair<int,int>>(algorithm);
+            CacheManager<string, string> *manager = new FileCacheManager<string, string>();
+            ClientHandler* clientHandler = new MyClientHandler<Matrix*, string>(solver,manager);
+            string t=argv[1];
+            s->open(stoi(argv[1]), clientHandler);
             return 0;
         }
     };
+}
+int main(int argv, char* argc[]){
+    boot::Main::main(argv,argc);
 }
 ////using namespace std;
 //int main() {

@@ -7,7 +7,6 @@
 #include <string>
 #include <unistd.h>
 #include "MyParallelServer.h"
-#include "MyClientHandler.h"
 #include "TCP_sockets.h"
 
 struct MyClientParams{
