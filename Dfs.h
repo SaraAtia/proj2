@@ -27,22 +27,6 @@ public:
         }
     }
         vector<Node> search(Searchable<Node> *searchable) override {
- /*           if point in closed_set:
-            return null
-
-            closed_set.add(point)
-            open_count += 1
-
-            if point = exit_node:
-            return point
-
-            if matrix[point] == -1:  // wall
-            return null
-
-            for node in matrix.neighbors(point):
-            out = DFS(sum_point(point, walk))
-            if out is not null:
-            return (point, out)*/
         init(searchable);
         std::stack<State<Node>*> s;
         s.push(searchable->getInitialState());
@@ -76,6 +60,7 @@ public:
         }
         sum+=state.getCost();
         path.push_back(searchable->getInitialNode());
+        //todo delete
         cout<<sum<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }

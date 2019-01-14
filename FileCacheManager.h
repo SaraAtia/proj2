@@ -18,6 +18,12 @@ template<class Problem, class Solution>
 class FileCacheManager : public CacheManager<Problem, Solution>{
     map<Problem,Solution>  cache;
 public:
+    FileCacheManager(){
+        readFromFile("cache.txt");
+    }
+    ~FileCacheManager(){
+        writeToFile("cache.txt");
+    }
     bool isSolved(Problem p) override{
         if(!cache.count(p))
             return false;
@@ -33,7 +39,9 @@ public:
     void saveProblem(Problem p, Solution s) override{
         cache.insert(make_pair(p,s));
     }
-    //todo read in the destructor
+    /*
+     * save the map to file in the end of the program
+     */
     void writeToFile(const string& file_name){
         fstream file;
         file.open (file_name, std::fstream::in | std::fstream::out | std::fstream::app);
@@ -45,6 +53,9 @@ public:
         }
         file.close();
     }
+    /*
+     * upload the file to the map of problem-solution
+     */
     void readFromFile(const string& file_name){
         fstream file;
         file.open (file_name, std::fstream::in | std::fstream::out | std::fstream::app);
@@ -56,6 +67,7 @@ public:
         size_t pos = 0;
         string token;
         while(getline(infile, line)){
+            //problem and solution separate by $
             pos = line.find("$");
             token = line.substr(0, pos);
             Problem problem=token;
@@ -65,7 +77,4 @@ public:
         }
     }
 };
-/*
- * in the distructor we'll update the file
- */
 #endif //PROJ2_FILECACHEMANAGER_H

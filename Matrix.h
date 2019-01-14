@@ -12,7 +12,7 @@
 #include <iostream>
 #include "Searchable.h"
 
-class Matrix: public Searchable<pair<int, int> > {
+class Matrix: public Searchable<pair<int, int>> {
     using Point = pair<int, int>;
 
     vector<vector<double>> values;

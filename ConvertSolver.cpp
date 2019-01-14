@@ -3,7 +3,6 @@
 //
 
 #include "ConvertSolver.h"
-//todo: to convert from index path to instruction - if went down on row index put"Down"..
 string ConvertSolver::solve(vector<pair<int,int>> path){
     string instructions="";
     for(int i = 1 ; i < path.size(); i++){

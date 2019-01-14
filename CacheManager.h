@@ -8,6 +8,7 @@
 
 template <class P,class S>
 class CacheManager{
+public:
     virtual bool isSolved(P p)=0;
     virtual S getSolution(P p)=0;
     virtual void saveProblem(P p, S s)=0;

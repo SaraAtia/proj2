@@ -12,23 +12,18 @@ string join(vector<string> s, string sym)
 {
     if (s.empty()) return string();
     string output;
-    for (int i = 0; i < s.size() - 1; ++i)  {
+    for (int i = 0; i < s.size() /*- 1*/; ++i)  {
         output += s[i] + sym;
     }
-    output += s[s.size() - 1];
+    //output += s[s.size() - 1];
     return output;
 }
-// get info and insert to vector<vector<string>> (after sending to lexer)
-// check if info is solved in "Cache Manager" - if not send to Solver
-// if you solved - add new solution to map (FileCacheManger)
-// send solution
 string SocketReader::readLine(){
-    //todo: need to be parameters from outside
     char buffer[SIZE];
     ssize_t find_pos;
     while ((find_pos = this->buffer.find('\n')) == string::npos)   {
         ssize_t num_read;
-        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    {
+        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    { // todo: ignore spaces
             perror("error on read");
             exit(1);
         }   else if (num_read == 0) {
@@ -39,7 +34,12 @@ string SocketReader::readLine(){
     }
     string output = this->buffer.substr(0, find_pos);
     this->buffer = this->buffer.substr(find_pos + 1);
-    return output;
+    string line;
+    for(int i=0;i<output.length();i++){
+        if(output.at(i)!=' ')
+            line+=output.at(i);
+    }
+    return line;
 }
 
 
