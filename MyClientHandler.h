@@ -10,9 +10,10 @@
 #include "CacheManager.h"
 #include "Matrix.h"
 #include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 #include <vector>
 #include <tuple>
-
 
 using Point = pair<int,int>;
 
@@ -56,13 +57,15 @@ public:
         Point out = convertToPoint(get<2>(result));
 
         Matrix* mat = Matrix::readFromString(str);
-        if(cm->isSolved(mat)){
-            S solution = cm->getSolution(mat);
-            send(socketID, solution, sizeof(solution), 0);
+        if(cm->isSolved(mat->to_String())){
+            string solution = cm->getSolution(*mat);
+            send(socketID, solution.c_str(), sizeof(solution), 0);
+            close(socketID);
         } else {
-            S solution = solver->solve(mat);
+            string solution = solver->solve(*mat);
             cm->saveProblem(mat->to_String(), solution);
-            send(socketID, solution, sizeof(solution), 0);
+            send(socketID, solution.c_str(), sizeof(solution), 0);
+            close(socketID);
         }
 
     }

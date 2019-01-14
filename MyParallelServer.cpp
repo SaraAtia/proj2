@@ -66,7 +66,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
             MCP->socketID = client.get_sock();
             pthread_t clientThread;
             if(pthread_create(&clientThread, nullptr, threadFunc, MCP)!=0){
-                __throw_invalid_argument("ERROR in creating thread"); //todo: what to do if fail
+                __throw_invalid_argument("ERROR in creating thread");
             }
             threads.push(clientThread);
         }   catch (posix_sockets::timeout_exception& e) {
@@ -80,7 +80,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
 
 void MyParallelServer::stop(std::stack<pthread_t> threads) {
     while(!threads.empty())  {
-        pthread_join(threads.top(), nullptr); //todo: what to put instead of null???
+        pthread_join(threads.top(), nullptr);
         threads.pop();
     }
 }

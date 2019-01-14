@@ -13,11 +13,11 @@
 #include "Matrix.h"
 
 template <class Node>
-class ShortestPathSolver : public Solver<Matrix, vector<string>> {
+class ShortestPathSolver : public Solver<Matrix, string> {
     SearchSolver<Node>* searchSolver;
     ConvertSolver* convertSolver;
 public:
-    vector<string> solve(Matrix matrix) override {
+    string solve(Matrix matrix) override {
         vector<Node> path=searchSolver->solve(matrix);
         return convertSolver->solve(path);
     }
