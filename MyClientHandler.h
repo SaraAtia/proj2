@@ -55,7 +55,7 @@ public:
 
         auto result = getAllInfo(socketID);
         //convert data to matrix with its info;
-        string str = join(get<0>(result), "!");
+        string str = join(get<0>(result), ",!");
 
         string in = /*convertToPoint(*/get<1>(result);
         string out = /*convertToPoint(*/get<2>(result);

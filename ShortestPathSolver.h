@@ -6,7 +6,6 @@
 #define PROJ2_SHORTESTPATHSOLVER_H
 
 
-#include <vector>
 #include "SearchSolver.h"
 #include "ConvertSolver.h"
 #include "Matrix.h"
