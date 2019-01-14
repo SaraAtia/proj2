@@ -78,7 +78,7 @@ int main() {
             {7, 7, 5,10, 8,10, 1, 6, 9, 9, 1},
             {5,10, 1,10, 7, 7, 3,10, 8, 1, 6}};*/
 //todo test
-    vector<vector<vector<double>>> allmat;
+/*    vector<vector<vector<double>>> allmat;
 
     int i=0;
     srand(time(NULL));
@@ -120,7 +120,7 @@ int main() {
             }
             cout<<allmat.at(k).at(i).at(allmat.at(k).size()-1)<<endl;
         }
-    }
+    }*/
 /*    vector<vector<double>> mat = { {4, 2, 9, 5, 7, 1, 7, 6, 3, 7, 8},
                                    {4, 1,10, 8, 1, 1, 5, 5, 7, 8, 4},
                                    {4, 5, 2, 8, 1, 1, 9, 3, 3, 1, 7},
@@ -197,14 +197,14 @@ cacheManager->writeToFile("cache.txt");*/
     //cacheManager->writeToFile("cache.txt");
     cacheManager->readFromFile("cache.txt");
     cout<<cacheManager->isSolved(m->to_String());*/
-/*    vector<vector<double>> mat = {{1, 2, 3},
-                                  {4, 5, 6},
-                                  {7, 8, 9}};
+    vector<vector<double>> mat = {{1, 1, 9},
+                                  {4, 1, 6},
+                                  {7, 1, 1}};
     Searchable<Point> *searchable = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
     Solver<Searchable<Point> *, vector<Point>> *solver =
-            new SearchSolver<Point>(new Bfs<Point>());
+            new SearchSolver<Point>(new BestFirstSearch<Point>());
     vector<Point> list1=solver->solve(searchable);
     for(Point s:list1)
-        cout << s.first << ", " << s.second <<endl;*/
+        cout << s.first << ", " << s.second <<endl;
     return 0;
 }
