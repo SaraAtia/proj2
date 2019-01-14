@@ -31,7 +31,7 @@ public:
 
     string readLine();
 };
-
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 template <class P, class S>
 class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
@@ -52,15 +52,14 @@ public:
         return Point(num1,num2);
     }*/
     void handleClient(int socketID) override{
-
         auto result = getAllInfo(socketID);
         //convert data to matrix with its info;
         string str = join(get<0>(result), ",!");
-
         string in = get<1>(result);
         string out = get<2>(result);
         str+=+"%"+in+","+out+",";
         string solution;
+        pthread_mutex_lock(&mutex);
         if(cm->isSolved(str)){
             solution = cm->getSolution(str);
             cout<<"already solved";
@@ -71,6 +70,7 @@ public:
             cm->saveProblem(mat->to_String(), solution);
             cout<<"solving...";
         }
+        pthread_mutex_unlock(&mutex);
         solution+="\r\n";
         send(socketID, solution.c_str(), sizeof(solution), 0);
         close(socketID);
