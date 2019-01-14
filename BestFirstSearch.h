@@ -77,9 +77,16 @@ public:
             state=*(state.getCameFrom());
         }
         path.push_back(searchable->getInitialNode());
+        //todo delete
         cout<<searchable->getGoalState()->getCost()<<","<<this->NumberOfNodesEvaluated<<endl;
         return path;
     }
+    /**
+     * find item in priority queue, by take all out and insert all
+     * @param open queue
+     * @param s specific state
+     * @return if it has the state
+     */
         bool hasItem(std::priority_queue <State<Node>*, vector<State<Node>*>,comp<Node>> open,State<Node>* s){
         std::queue<State<Node>*> temp;
         bool flag=false;

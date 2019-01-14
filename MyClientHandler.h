@@ -43,24 +43,29 @@ public:
         this->solver = solver;
         this->cm = cm;
     }
-    Point convertToPoint(string pointStr){
-        return pair<int,int>(0,0);//todo
-    }
+/*    Point convertToPoint(string pointStr){
+        int pos = pointStr.find(",");
+        string token = pointStr.substr(0, pos);
+        int num1=stoi(token);
+        pointStr.erase(0, pos + 1);
+        int num2=stoi(pointStr);
+        return Point(num1,num2);
+    }*/
     void handleClient(int socketID) override{
 
         auto result = getAllInfo(socketID);
         //convert data to matrix with its info;
         string str = join(get<0>(result), "!");
 
-        Point in = convertToPoint(get<1>(result));
-        Point out = convertToPoint(get<2>(result));
-
-        Matrix* mat = Matrix::readFromString(str);
-        if(cm->isSolved(mat->to_String())){
-            string solution = cm->getSolution(mat->to_String());
+        string in = /*convertToPoint(*/get<1>(result);
+        string out = /*convertToPoint(*/get<2>(result);
+        str+=+"%"+in+","+out+",";
+        if(cm->isSolved(str)){
+            string solution = cm->getSolution(str);
             send(socketID, solution.c_str(), sizeof(solution), 0);
             close(socketID);
         } else {
+            Matrix* mat = Matrix::readFromString(str);
             string solution = solver->solve(mat);
             cm->saveProblem(mat->to_String(), solution);
             send(socketID, solution.c_str(), sizeof(solution), 0);

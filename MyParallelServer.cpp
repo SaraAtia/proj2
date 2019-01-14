@@ -72,7 +72,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
             break;
         }
 
-        server.settimeout(10);  // TODO change to 1
+        server.settimeout(5000);  // TODO change to 1
     }
     cout << "No more clients!" << endl;
 }
