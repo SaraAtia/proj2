@@ -28,7 +28,7 @@ string SocketReader::readLine(){
     ssize_t find_pos;
     while ((find_pos = this->buffer.find('\n')) == string::npos)   {
         ssize_t num_read;
-        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    {
+        if ((num_read = read(this->sock_id, buffer, SIZE - 1)) < 0)    { // todo: ignore spaces
             perror("error on read");
             exit(1);
         }   else if (num_read == 0) {
