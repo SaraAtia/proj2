@@ -7,7 +7,7 @@
 
 #include <tuple>
 #include <netinet/in.h>
-#include <sys/socket.h>
+//#include <sys/socket.h>
 #include <unistd.h>
 #include "ClientHandler.h"
 #include "CacheManager.h"
@@ -31,7 +31,7 @@ public:
 
     string readLine();
 };
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+//pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 template <class P, class S>
 class MyClientHandler : public ClientHandler{
     Solver<P, S>* solver;
@@ -59,7 +59,7 @@ public:
         string out = get<2>(result);
         str+=+"%"+in+","+out+",";
         string solution;
-        pthread_mutex_lock(&mutex);
+        //pthread_mutex_lock(&mutex);
         if(cm->isSolved(str)){
             solution = cm->getSolution(str);
             cout<<"already solved";
@@ -68,10 +68,11 @@ public:
             Matrix* mat = Matrix::readFromString(str);
             solution = solver->solve(mat);
             cm->saveProblem(mat->to_String(), solution);
+            delete mat;
             cout<<"solving...";
         }
-        pthread_mutex_unlock(&mutex);
-        solution+="\r\n";
+       // pthread_mutex_unlock(&mutex);
+        solution+='\n';
         send(socketID, solution.c_str(), sizeof(solution), 0);
         close(socketID);
 

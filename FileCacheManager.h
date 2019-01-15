@@ -21,7 +21,7 @@ public:
     FileCacheManager(){
         readFromFile("cache.txt");
     }
-    ~FileCacheManager(){
+    virtual ~FileCacheManager(){
         writeToFile("cache.txt");
     }
     bool isSolved(Problem p) override{
@@ -46,9 +46,9 @@ public:
         fstream file;
         file.open (file_name, std::fstream::in | std::fstream::out | std::fstream::app);
         for(auto p:cache){
-            file<<(p.first)/*->to_String()*/;
+            file<<(p.first);
             file<< "$";
-            file<<(p.second)/*todo check->to_String()*/;
+            file<<(p.second);
             file<<"\n";
         }
         file.close();

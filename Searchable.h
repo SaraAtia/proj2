@@ -21,6 +21,7 @@ public:
     virtual double getInitCost(Node p)=0;
     virtual vector<vector<State<Node >*>> getSates()=0;
 
-    virtual vector<State<Node>*> getAllPossibleStates(State<Node> s)=0;
+    virtual vector<State<Node>*> getAllPossibleStates(State<Node>* s)=0;
+    virtual ~Searchable()= default;
 };
 #endif //PROJ2_SEARCHABLE_H

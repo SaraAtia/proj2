@@ -14,6 +14,7 @@ using namespace std;
 class ConvertSolver : public Solver<vector<pair<int,int>>, string>{
 public:
     string solve(vector<pair<int,int>> path) override;
+    virtual ~ConvertSolver()= default;
 };
 
 

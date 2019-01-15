@@ -12,6 +12,7 @@ public:
     virtual bool isSolved(P p)=0;
     virtual S getSolution(P p)=0;
     virtual void saveProblem(P p, S s)=0;
+    virtual ~CacheManager()= default;
 };
 
 

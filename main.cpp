@@ -9,7 +9,6 @@
 #include "SearchSolver.h"
 #include "BestFirstSearch.h"
 #include "ConvertSolver.h"
-//#include "Bfs.h"
 #include "MyParallelServer.h"
 #include "FileCacheManager.h"
 #include "Dfs.h"
@@ -30,6 +29,7 @@ namespace boot{
             ClientHandler* clientHandler = new MyClientHandler<Matrix*, string>(solver,manager);
             string t=argv[1];
             s->open(stoi(argv[1]), clientHandler);
+            //s->stop()
             delete(s);
             delete(algorithm);
             delete(solver);
@@ -43,14 +43,17 @@ int main(int argv, char* argc[]){
     //boot::Main::main(argv,argc);
     auto * algorithm = new Astar<pair<int,int>>();
     Solver<Matrix*, string>* solver = new ShortestPathSolver<pair<int,int>>(algorithm);
-    vector<vector<double>> mat = {{1, 1, 3},
-                                  {4, 5, 6},
-                                  {10, 3, 9}};
-    Matrix*m = new Matrix(mat, make_pair(0, 0), make_pair(2, 2));
+    vector<vector<double>> mat = {{1, 2, 3},
+                                  {-1,5,-1},
+                                  {7, 1, -1},
+                                  {1, -1, 3},
+                                  {1, 2, 3}};
+    Matrix* m = new Matrix(mat, make_pair(0, 0), make_pair(3, 2));
     cout<<solver->solve(m);
+    delete(m);
     delete(algorithm);
     delete(solver);
-    delete(m);
+    return 0;
 }
 /*    auto * algorithm = new Astar<pair<int,int>>();
     Solver<Matrix*, string>* solver = new ShortestPathSolver<pair<int,int>>(algorithm);

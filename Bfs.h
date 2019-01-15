@@ -37,7 +37,7 @@ public:
             State<Node> *currnode=queue.front();
             queue.pop();
             if(currnode==searchable->getGoalState()){ break;}
-            vector<State<Node>*> neighbours=searchable->getAllPossibleStates(*currnode);
+            vector<State<Node>*> neighbours=searchable->getAllPossibleStates(currnode);
             //for(State<Node> neighbor:neighbours){
             for(int i=0;i<neighbours.size();i++){
                 State<Node>* neighbor=neighbours.at(i);

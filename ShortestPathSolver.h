@@ -25,7 +25,7 @@ public:
 //        vector<pair<int, int>> path= this->searchSolver->solve(matrix);
         return convertSolver->solve(path);
     }
-    ~ShortestPathSolver(){
+    virtual ~ShortestPathSolver(){
         delete searchSolver;
         delete convertSolver;
     }

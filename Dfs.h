@@ -37,7 +37,7 @@ public:
                 this->NumberOfNodesEvaluated++;
                 if(u==searchable->getGoalState()){ break;}
                 u->setVisited(true);
-                for(State<Node>* w : searchable->getAllPossibleStates(*u)){
+                for(State<Node>* w : searchable->getAllPossibleStates(u)){
                     if(!w->isVisited()&&w->getCost()!=-1) {
                         s.push(w);
                         w->setCameFrom(u);

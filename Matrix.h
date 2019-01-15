@@ -41,6 +41,31 @@ public:
         }
         this->states=states;
     }
+    ~Matrix() {
+        for (int i = 0; i < states.size(); i++){
+            for (int j =0; j <states[i].size(); j++){
+                states[i][j]->setCameFrom(nullptr);
+            }
+        }
+        //for (int i = 0; i < states.size(); i++) {
+        vector<State<Point> *> vec;
+        while(states.size()!=1){
+            vec=states[states.size()-1];
+            while(!vec.empty()){
+                State<Point >*state=vec[vec.size()-1];
+                delete (state);
+                vec.pop_back();
+            }
+            states.pop_back();
+        }
+        while(states[0].size()!=1){
+            State<Point >*state=states[0][states[0].size()-1];
+            delete (state);
+            states[0].pop_back();
+        }
+        //delete (states[0][0]);
+
+    }
     vector<vector<State<Point >*>> getSates() override{
         return this->states;
     }
@@ -49,7 +74,7 @@ public:
         return &this->initialState;
     }
     State<Point>* getGoalState() override{
-        return this->states.at(this->goalNode.first).at(this->goalNode.second);
+        return this->states[this->goalNode.first][this->goalNode.second];
     }
     Point getInitialNode()  override    {
         return this->initialState.getState();
@@ -60,31 +85,32 @@ public:
         return this->goalNode;
     }
 
-    vector<State<Point>*> getAllPossibleStates(State<pair<int,int>> s) override{
+    vector<State<Point>*> getAllPossibleStates(State<pair<int,int>>* s) override{
         vector<State<Point>*> list;
-        //matrix is in size n*n
-        int n=values.size();
-        int x=s.getState().first;
-        int y=s.getState().second;
-        if(x>=n||y>=n){
+        //matrix is in size m*n
+        int m=values.size();
+        int n=values.at(0).size();
+        int x=s->getState().first;
+        int y=s->getState().second;
+        if(x>=m||y>=n){
             __throw_invalid_argument("invalid position in matrix");
         }
         //go up is valid
         if(x-1!=-1){
-            list.push_back(states.at(x-1).at(y));
+            list.push_back(states[x-1][y]);
         }
         //go left is valid
         if(y-1!=-1){
-            list.push_back(states.at(x).at(y-1));
+            list.push_back(states[x][y-1]);
 
         }
         //go right is valid
         if(y+1!=n){
-            list.push_back(states.at(x).at(y+1));
+            list.push_back(states[x][y+1]);
         }
         //go down is valid
-        if(x+1!=n){
-            list.push_back(states.at(x+1).at(y));
+        if(x+1!=m){
+            list.push_back(states[x+1][y]);
         }
         return list;
     }

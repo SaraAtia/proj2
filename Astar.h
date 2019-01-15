@@ -120,7 +120,10 @@ public:
             deleteState(&open, node_current);
             //if it the goal node
             if(node_current==searchable->getGoalState()){break;}
-            vector<State<Node>*> neighbours=searchable->getAllPossibleStates(*node_current);
+            if(node_current->getState().first==0&&node_current->getState().second==2){
+                int a=0;
+            }
+            vector<State<Node>*> neighbours=searchable->getAllPossibleStates(node_current);
             for(State<Node>* neighbour:neighbours){
                 if(neighbour->getCost()==-1){ continue;}
                 double currentval = node_current->getCost() +searchable->getInitCost(neighbour->getState());
@@ -155,11 +158,11 @@ public:
      * @return all the nodes in the path
      */
     vector<Node> returnPath(Searchable<Node> *searchable) {
-        State<Node> state =*(searchable->getGoalState());
+        State<Node> *state =searchable->getGoalState();
         vector<Node> path;
-        while(state.getCameFrom() != nullptr){
-            path.push_back(state.getState());
-            state=*(state.getCameFrom());
+        while(state->getCameFrom() != nullptr){
+            path.push_back(state->getState());
+            state=state->getCameFrom();
         }
         path.push_back(searchable->getInitialNode());
         std::reverse(path.begin(),path.end());

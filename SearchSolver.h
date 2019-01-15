@@ -19,7 +19,7 @@ public:
     vector<Node> solve(Searchable<Node>* p) override{
         return this->searcher->search(p);
     }
-
+    virtual ~SearchSolver()= default;
 };
 
 

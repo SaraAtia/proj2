@@ -13,6 +13,7 @@ class Searcher{
 public:
     virtual vector<Node> search(Searchable<Node> *s)=0;
     virtual int getNumberOfNodesEvaluated()=0;
+    virtual ~Searcher()= default;
 
 };
 #endif //PROJ2_SEARCHER_H

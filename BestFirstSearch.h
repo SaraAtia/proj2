@@ -46,7 +46,7 @@ public:
             open.pop();
             n->setVisited(true);
             if(n==searchable->getGoalState()){ break;}
-            for(State<Node>* s : searchable->getAllPossibleStates(*n)){
+            for(State<Node>* s : searchable->getAllPossibleStates(n)){
                 if(s->getCost()==-1){ continue;}
                 if(!s->isVisited()&&!hasItem(open,s)){
                     s->setCameFrom(n);

@@ -5,6 +5,7 @@
 #ifndef PROJ2_STATE_H
 #define PROJ2_STATE_H
 #include <algorithm>
+#include <iostream>
 
 template <class T>
 class State {
@@ -13,16 +14,16 @@ class State {
     State<T> *cameFrom;
     bool visited;
 public:
-    State(T state) {
+    ~State(){};
+    State(T state): cost(0) {
         this->position = state;
-        this->cost = 0;
+//        this->cost = 0;
         this->cameFrom = nullptr;
         visited=false;
     }
-
-    State(T position, double cost, State<T> *cameFrom) {
+    State(T position, double cost, State<T> *cameFrom): cost(cost) {
         this->position = position;
-        this->cost = cost;
+//        this->cost = cost;
         this->cameFrom = cameFrom;
         visited=false;
     }

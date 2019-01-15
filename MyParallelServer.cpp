@@ -17,6 +17,7 @@ struct MyClientParams{
 void* threadFunc(void* info){
     MyClientParams* clientParams = (MyClientParams*) info;
     clientParams->cl->handleClient(clientParams->socketID);
+    delete((MyClientParams*) info);
 }
 /**
  * open server and get client - one a client will log in the limited time requested (1 second)
@@ -28,7 +29,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
     stack<pthread_t> threads;
 
 
-    stack<posix_sockets::TCP_client> sockets;
+    //stack<posix_sockets::TCP_client> sockets;
     posix_sockets::TCP_server server(port);
 //    int mainSocketID = socket(AF_INET, SOCK_STREAM, 0);
 //    sockets.push(mainSocketID);
@@ -59,12 +60,13 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
 //        }
         try {
             posix_sockets::TCP_client client = server.accept();
-            sockets.push(client);
+            //sockets.push(client);
             MyClientParams* MCP = new MyClientParams();
             MCP->cl = clientHandler;
             MCP->socketID = client.get_sock();
             pthread_t clientThread;
             if(pthread_create(&clientThread, nullptr, threadFunc, MCP)!=0){
+                delete(MCP);
                 __throw_invalid_argument("ERROR in creating thread");
             }
             threads.push(clientThread);
@@ -74,6 +76,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
 
         server.settimeout(500);  // TODO change to 1
     }
+    this->stop(threads);
     cout << "No more clients!" << endl;
 }
 
