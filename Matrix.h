@@ -125,7 +125,7 @@ public:
      * convert string to matrix
      */
     static Matrix* readFromString(string s){
-        vector<double> row;
+        //vector<double> row;
         vector<int> pairs;
         vector<vector<double >> mat;
         string line=s;
@@ -135,6 +135,7 @@ public:
         //read the matrix
         while(0!=line.find("%")) {
             //endpos = line.find("!");
+            vector<double> row;
             while(line.find("!")>line.find(",")) {
                 pos = line.find(",");
                 token = line.substr(0, pos);

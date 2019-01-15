@@ -12,6 +12,7 @@
 #include "ClientHandler.h"
 #include "CacheManager.h"
 #include "Matrix.h"
+#include <iostream>
 
 using Point = pair<int,int>;
 
@@ -52,26 +53,28 @@ public:
         return Point(num1,num2);
     }*/
     void handleClient(int socketID) override{
-        auto result = getAllInfo(socketID);
+        //todo/*auto result = getAllInfo(socketID);
         //convert data to matrix with its info;
-        string str = join(get<0>(result), ",!");
+        /*string str = join(get<0>(result), ",!");
         string in = get<1>(result);
         string out = get<2>(result);
-        str+=+"%"+in+","+out+",";
+        str+=+"%"+in+","+out+",";*/
+        string str="1,2,3,!4,5,6,!%0,0,1,1,";
+        Matrix* mat = Matrix::readFromString(str);
+        string stringMat=mat->to_String();
         string solution;
         //pthread_mutex_lock(&mutex);
-        if(cm->isSolved(str)){
-            solution = cm->getSolution(str);
-            cout<<"already solved";
+        if(cm->isSolved(stringMat)){
+            solution = cm->getSolution(stringMat);
+            std::cout<<"already solved"<<endl;
 
         } else {
-            Matrix* mat = Matrix::readFromString(str);
             solution = solver->solve(mat);
-            cm->saveProblem(mat->to_String(), solution);
+            cm->saveProblem(stringMat, solution);
             delete mat;
-            cout<<"solving...";
+            std::cout<<"solving..."<<endl;
         }
-       // pthread_mutex_unlock(&mutex);
+        // pthread_mutex_unlock(&mutex);
         solution+='\n';
         send(socketID, solution.c_str(), sizeof(solution), 0);
         close(socketID);
